@@ -4,7 +4,6 @@
 
 
 import random as rand
-import uuid as uuid
 import math as math
 
 
@@ -371,6 +370,26 @@ class Armor:
         )
 
 
+class Inventory:
+
+    def __init__(self):
+        self.storedItems: list = []
+        self.weight: float = 0
+        self.max_items: int = 4
+        self._gold: int = 0
+
+    @property
+    def gold(self) -> int:
+        return self._gold
+
+    @gold.setter
+    def gold(self, new_value: int):
+        if new_value > 0:
+            self._gold = new_value
+        else:
+            raise ValueError('Gold cannot be negative.')
+
+
 class ActorUnit:
     """
 
@@ -404,7 +423,7 @@ class ActorUnit:
         # 0-99:Friendly; 100-174:Neutral; 175-254:Disgruntled ; 255+:hostile
         self.hostility: int = hostility
 
-        self.inventory: list = []
+        self.inventory: Inventory = Inventory()
 
     @staticmethod
     def unit_count() -> int:
@@ -499,7 +518,7 @@ class ActorUnit:
         index: int = 0
         chosen_index: int = -1
         armors: list = [self.armor]
-        armors.extend([item for item in self.inventory if type(item) == 'Armor'])
+        armors.extend([item for item in self.inventory.storedItems if type(item) == 'Armor'])
         for armor in armors:
             print(f'ID-{index:02} | {armor.name}: Def-{armor.defense} AC-{armor.AC}\n'
                   f'      | {" "*(len(armor.name)+1)} Dur-{armor.durability}/{armor.durability_max} Res-{", ".join(armor.resistances)}\n'
@@ -515,8 +534,8 @@ class ActorUnit:
     def don_armor(self):
         new_armor: Armor = self.armor_selector()
         if new_armor.durability >= 1:  # Check if broken.
-            self.inventory.append(self.armor)  # Store current armor.
-            self.inventory.remove(new_armor)  # Take out new armor.
+            self.inventory.store(self.armor)  # Store current armor.
+            self.inventory.take(new_armor)  # Take out new armor.
             self.armor = new_armor  # Equip.
         else:
             print('This armor is too damaged to use.')
@@ -548,8 +567,6 @@ class ActorUnit:
         else:
             raise ValueError('Not sure how you got here.')
         print(f'{item.name}: {item.durability} / {item.durability_max}')
-
-
 
     @property
     def armor_durability(self) -> float:
@@ -632,11 +649,12 @@ class ActorUnit:
         )
 
 
-class Shop:
+class Shop(ActorUnit):
 
     def __init__(self):
         x: int = GameObject.turn_count
-        self.gold = rand.randrange(10+x*5, 80+x*15)
+        self.inventory: Inventory = Inventory()
+        self.inventory.gold = rand.randrange(10+x*5, 80+x*15)
 
 
 ###################################
