@@ -119,7 +119,7 @@ class GameObject:
             if is_boss:
                 # Boss Stat Block
                 hp: int = int(15+x*0.5+x**2)
-                atk: int = int(math.floor(x*0.8))
+                atk: int = int(math.floor(1+x*0.8))
                 dur: int = int(30+0.00003*x**3)
                 hit_mod: int = int(math.floor(x*0.1))
                 ranged: bool = True if rand.random() > 0.9 else False
@@ -140,7 +140,7 @@ class GameObject:
                 min_hp: int = int(3+(x**2)*0.009)
                 max_hp: int = int(11+(x**2)*0.02)
                 hp: int = rand.randint(min_hp, max_hp)
-                atk: int = int()
+                atk: int = int(math.floor(1+x*0.7))
                 hit_mod: int = int(math.floor(x*0.06667))
                 weapon: Weapon = Weapon('Spiked Club', atk, 15, hit_mod, 'Piercing')
                 default_weapon: Weapon = Weapon('Fists')
