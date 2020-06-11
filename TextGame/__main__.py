@@ -15,9 +15,8 @@ import math as math
 
 class GameObject:
     """
-
+    Singleton class that manages game-globals.
     """
-
     actors: list = []
     combat_help: str = 'Combat Help: (h)elp, (a)ttack, (p)ass, (s)tatus, hunt (e)nemy'
     combat_actions: dict = {
@@ -30,9 +29,9 @@ class GameObject:
         'status': lambda *args, **kwargs: print(kwargs['actor']),
         's': lambda *args, **kwargs: print(kwargs['actor']),
         'hunt enemy': lambda *args, **kwargs: GameObject.Events.generate_enemy(),
-        'e': lambda *args, **kwargs: GameObject.Events.generate_enemy(is_boss=True)
+        'e': lambda *args, **kwargs: GameObject.Events.generate_enemy()
     }
-    standard_help: str = 'Help: (h)elp, (s)tatus, sho(p), (r)epair, hunt (e)nemy'
+    standard_help: str = 'Help: (h)elp, (s)tatus, sho(p), (r)epair, hunt (e)nemy, hea(l)'
     standard_actions: dict = {
         'help': lambda *args, **kwargs: print(GameObject.standard_help),
         'h': lambda *args, **kwargs: print(GameObject.standard_help),
@@ -43,10 +42,10 @@ class GameObject:
         'repair': '',
         'r': '',
         'hunt enemy': lambda *args, **kwargs: GameObject.Events.generate_enemy(),
-        'e': lambda *args, **kwargs: GameObject.Events.generate_enemy()
-
+        'e': lambda *args, **kwargs: GameObject.Events.generate_enemy(),
+        'heal': lambda *args, **kwargs: kwargs['actor'].heal(),
+        'l': lambda *args, **kwargs: kwargs['actor'].heal()
     }
-
     damage_types: list = ['Slicing', 'Piercing', 'Bludgeoning', 'Fire', 'Cold', 'Mental']
     turn_count: int = 0
     player_actor: 'ActorUnit' = None
@@ -81,6 +80,13 @@ class GameObject:
 
     @staticmethod
     def turn():
+        """
+        Takes turns sequentially for each actor.
+
+        TODO: Refactor in/out-of-combat logic into a decorator for actor actions.
+
+        :return: None
+        """
         print('\n-------------------------------------')
         if GameObject.player_actor.health < 1:  # Loss Condition
             print('Game Over')
@@ -113,8 +119,18 @@ class GameObject:
         GameObject()
 
     class Events:
+        """
+        Container class for game events. Used for namespace cleanliness.
+        """
+
         @staticmethod
         def generate_enemy(is_boss: bool = False):
+            """
+            Generates an enemy actor with stats controlled by GameObject.turn_count.
+
+            :param is_boss: Controls whether to spawn a std. mob or a boss mob.
+            :return: None
+            """
             x: int = GameObject.turn_count
             if is_boss:
                 # Boss Stat Block
@@ -155,17 +171,24 @@ class GameObject:
             GameObject.enemy_count += 1
 
         @staticmethod
-        def random_event():
+        def random_event() -> bool:
+            """
+            Rolls for a random game event.
+
+            :return: True is event occurs, otherwise returns False.
+            """
             roll = rand.random()*100
             if roll < 50:
-                pass
+                return False
             elif roll < 60:
                 GameObject.Events.generate_enemy()
+                return True
             elif roll < 65:
                 if GameObject.turn_count > 30:
                     GameObject.Events.generate_enemy(is_boss=True)
+                    return True
             else:
-                pass
+                return False
 
 
 class Weapon:
@@ -200,18 +223,36 @@ class Weapon:
         return Weapon._instance_count
 
     @property
-    def durability(self):
+    def durability(self) -> float:
+        """
+        Getter for _durability.
+
+        :return: _durability.
+        """
         return self._durability
 
     @durability.setter
     def durability(self, new_durability: float):
+        """
+        Setter for _durability. Contains logic for breakage and negative(invalid) durabilities.
+
+        TODO: Add logic for durability > max.
+
+        :param new_durability: New value.
+        :return: None
+        """
         self._durability = new_durability
         if self._durability < 1:
             print(f'{self.name} has broken!')
             self._durability = 0
 
     @property
-    def dmg(self):
+    def dmg(self) -> float:
+        """
+        Getter for _dmg with logic for broken weapons.
+
+        :return: If durability is 0, returns 1, otherwise returns _dmg.
+        """
         if self.durability < 1:
             return 1
         return self._dmg
@@ -378,12 +419,12 @@ class ActorUnit:
         weapon: Weapon = self.weapon_selector()
 
         if weapon.is_ranged:
-            print('Try ranged battle; not implemented.')
+            print('Try finger; ranged battle not implemented.')
         else:
             roll: int = rand.randint(1, 20)  # Chance to hit logic.
             if roll+weapon.hit_mod >= target.armor.AC:
                 if roll < 8:  # 40% chance to lose 1 durability every attack.
-                    weapon.durability -= 1
+                    self.modify_weapon_durability(weapon, -1)
                 print(f'{self.name} hit {target.name} with {weapon.name}+{weapon.hit_mod} for ', end='')
                 target.take_damage(weapon.dmg, weapon.dmg_type)
             else:
@@ -454,6 +495,14 @@ class ActorUnit:
         else:
             print('This armor is too damaged to use.')
 
+    def heal(self):
+        """
+        Heal action of player.
+
+        :return:
+        """
+        self.health += 3
+
     @property
     def armor_durability(self) -> float:
         return self.armor.durability
@@ -475,10 +524,21 @@ class ActorUnit:
 
     @property
     def health(self) -> float:
+        """
+        Getter for _health.
+
+        :return: _health property of ActorUnit instance.
+        """
         return self._health
 
     @health.setter
     def health(self, new_health: int):
+        """
+        Setter for _health.
+
+        :param new_health: Set value.
+        :return: None
+        """
         self._health = new_health
         if self._health <= 0:
             print(f'{self.name} has been slain. (Overkill: {abs(self._health)})')
@@ -487,6 +547,9 @@ class ActorUnit:
                     GameObject.actors.remove(actor)
                     if actor.hostility > 254:
                         GameObject.enemy_count -= 1
+        if self._health > self.health_max:
+            self._health = self.health_max
+            print('Fully healed!')
 
     def __str__(self) -> str:
         character_stat: str = (
