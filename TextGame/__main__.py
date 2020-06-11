@@ -82,7 +82,7 @@ class GameObject:
     @staticmethod
     def turn():
         print('\n-------------------------------------')
-        if GameObject.player_actor.health < 1:
+        if GameObject.player_actor.health < 1:  # Loss Condition
             print('Game Over')
             GameObject.is_active_game = False
             return
@@ -106,7 +106,6 @@ class GameObject:
                     GameObject.turn_count += 1
                     actor.attack(target=GameObject.player_actor)
                     GameObject.Events.random_event()
-
         GameObject.nonfree_action_taken = False
 
     @staticmethod
@@ -118,6 +117,7 @@ class GameObject:
         def generate_enemy(is_boss: bool = False):
             x: int = GameObject.turn_count
             if is_boss:
+                # Boss Stat Block
                 hp: int = int(15+x*0.5+x**2)
                 atk: int = int(math.floor(x*0.8))
                 dur: int = int(30+0.00003*x**3)
@@ -136,6 +136,7 @@ class GameObject:
                 GameObject.actors.append(boss)
 
             else:
+                # Mob Stat Block
                 min_hp: int = int(3+(x**2)*0.009)
                 max_hp: int = int(11+(x**2)*0.02)
                 hp: int = rand.randint(min_hp, max_hp)
@@ -149,7 +150,7 @@ class GameObject:
                 mob: ActorUnit = ActorUnit('Goblin', hp, weapon, armor, hostility=555)
                 mob.weapons.append(default_weapon)
 
-                print(f'A {mob.name} approaches.')
+                print(f'A {mob.name.lower()} approaches.')
                 GameObject.actors.append(mob)
             GameObject.enemy_count += 1
 
@@ -239,8 +240,9 @@ class Weapon:
             f'_durability: {self._durability}, '
             f'hit_mod: {self.hit_mod}, '
             f'dmg_type: {self.dmg_type}, '
-            f'is_ranged: {self.is_ranged}'
+            f'is_ranged: {self.is_ranged})'
                 )
+
 
 class Armor:
 
@@ -312,6 +314,16 @@ class Armor:
                   f'++{"+" * len(self.name)}++\n')
         return x
 
+    def __repr__(self) -> str:
+        return (
+            f'Armor(name:{self.name}, '
+            f'durability_max:{self.durability_max}, '
+            f'_durability:{self._durability}, '
+            f'_resistances:{self._resistances}, '
+            f'_defense:{self._defense}, '
+            f'AC:{self.AC})'
+        )
+
 
 class ActorUnit:
     """
@@ -333,7 +345,6 @@ class ActorUnit:
         ActorUnit._instance_count += 1
 
         self.name = name
-        self.identifier = uuid.uuid4()
 
         self.health_max: int = health
         self._health: float = health
@@ -383,8 +394,15 @@ class ActorUnit:
         if damage_type in self.armor.resistances:
             effective_dmg *= 0.66  # Resistance grants 33% dmg reduction.
         effective_dmg -= self.armor.defense
+
         if effective_dmg < 1:  # Minimum 1 damage on hit
             effective_dmg = 1
+
+        armor_damage: float = effective_dmg - self.armor.defense
+        if armor_damage < 0:
+            armor_damage = 0
+        self.armor_durability -= armor_damage
+
         print(f'{effective_dmg} {damage_type.lower()} damage.')
         self.health -= effective_dmg
 
@@ -430,7 +448,11 @@ class ActorUnit:
         return self.weapons[chosen_index]
 
     def don_armor(self, new_armor: 'Armor'):
-        pass
+        if new_armor.durability >= 1:
+            self.inventory.append(self.armor)  # Store current armor.
+            self.armor = new_armor
+        else:
+            print('This armor is too damaged to use.')
 
     @property
     def armor_durability(self) -> float:
@@ -440,6 +462,7 @@ class ActorUnit:
     def armor_durability(self, new_durability: float):
         self.armor.durability = new_durability
         if self.armor.durability < 1:
+            self.inventory.append(self.armor)  # Store current armor.
             self.armor = Armor()  # When armor breaks, equip loincloth
 
     def modify_weapon_durability(self, weapon: Weapon, durability_delta: float):
@@ -486,7 +509,15 @@ class ActorUnit:
 
     def __repr__(self) -> str:
         return (
-            f''
+            f'ActorUnit(name:{self.name}, '
+            f'health_max:{self.health_max}, '
+            f'_health:{self._health}, '
+            f'weapons:{repr(self.weapons)}, '
+            f'armor:{repr(self.armor)}, '
+            f'_xp:{self._xp}, '
+            f'_lvl:{self._lvl}, '
+            f'hostility:{self.hostility}'
+            f'inventory:{self.inventory})'
         )
 
 
