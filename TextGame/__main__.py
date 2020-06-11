@@ -39,8 +39,8 @@ class GameObject:
         's': lambda *args, **kwargs: print(kwargs['actor']),
         'shop': '',
         'p': '',
-        'repair': '',
-        'r': '',
+        'repair': lambda *args, **kwargs: kwargs['actor'].repair(),
+        'r': lambda *args, **kwargs: kwargs['actor'].repair(),
         'hunt enemy': lambda *args, **kwargs: GameObject.Events.generate_enemy(),
         'e': lambda *args, **kwargs: GameObject.Events.generate_enemy(),
         'heal': lambda *args, **kwargs: kwargs['actor'].heal(),
@@ -235,8 +235,7 @@ class Weapon:
     def durability(self, new_durability: float):
         """
         Setter for _durability. Contains logic for breakage and negative(invalid) durabilities.
-
-        TODO: Add logic for durability > max.
+        Also contains logic for excess repair.
 
         :param new_durability: New value.
         :return: None
@@ -245,6 +244,9 @@ class Weapon:
         if self._durability < 1:
             print(f'{self.name} has broken!')
             self._durability = 0
+        elif self._durability > self.durability_max:
+            self._durability = self.durability_max
+            print(f'{self.name} is fully repaired!')
 
     @property
     def dmg(self) -> float:
@@ -318,6 +320,9 @@ class Armor:
         if self._durability < 1:
             print(f'{self.name} has broken!')
             self._durability = 0
+        elif self._durability > self.durability_max:
+            self._durability = self.durability_max
+            print(f'{self.name} is fully repaired!')
 
     @property
     def defense(self):
@@ -378,7 +383,7 @@ class ActorUnit:
                  name: str = 'default',
                  health: int = 1,
                  starter_weapon: Weapon = Weapon('Fists'),
-                 starter_armor: Armor = Armor(name='Loincloth', defense=2, armor_class=5),
+                 starter_armor: Armor = Armor('Loincloth', defense=2, armor_class=5),
                  level: int = 0,
                  experience: int = 1,
                  hostility: int = 170):
@@ -448,15 +453,16 @@ class ActorUnit:
         self.health -= effective_dmg
 
     def target_selector(self) -> 'ActorUnit':
-        index = 0
+        index: int = 0
+        chosen_index: int = -1
+
         for actor in GameObject.actors:
             if actor is not self:
                 print(f'ID-{index:02} | {actor.name}: HP-{actor.health} Def-{actor.armor.defense}\n'
                       f'      | {" "*(len(actor.name)+1)} AC-{actor.armor.defense} Res-{", ".join(actor.armor.resistances)}')
             else:
-                banned_index = index
+                banned_index: int = index
             index += 1
-        chosen_index = -1
         while chosen_index <= 0 or index <= chosen_index != banned_index:
             try:
                 chosen_index = int(input('Choose a valid target ID: '))
@@ -465,10 +471,11 @@ class ActorUnit:
         return GameObject.actors[chosen_index]
 
     def weapon_selector(self) -> Weapon:
-        index = 0
-        chosen_index = -1
+        index: int = 0
+        chosen_index: int = -1
+
         if self is not GameObject.player_actor:  # AI
-            dmg = 0
+            dmg: float = 0
             for weapon in self.weapons:
                 if weapon.dmg > dmg:  # AI always picks highest dmg weapon available.
                     dmg = weapon.dmg
@@ -488,10 +495,29 @@ class ActorUnit:
                     print('Not a valid numeric ID.')
         return self.weapons[chosen_index]
 
-    def don_armor(self, new_armor: 'Armor'):
-        if new_armor.durability >= 1:
+    def armor_selector(self) -> Armor:
+        index: int = 0
+        chosen_index: int = -1
+        armors: list = [self.armor]
+        armors.extend([item for item in self.inventory if type(item) == 'Armor'])
+        for armor in armors:
+            print(f'ID-{index:02} | {armor.name}: Def-{armor.defense} AC-{armor.AC}\n'
+                  f'      | {" "*(len(armor.name)+1)} Dur-{armor.durability}/{armor.durability_max} Res-{", ".join(armor.resistances)}\n'
+                  )
+            index += 1
+        while chosen_index < 0 or index <= chosen_index:
+            try:
+                chosen_index = int(input('Choose a valid weapon ID: '))
+            except ValueError:
+                print('Not a valid numeric ID.')
+        return armors[chosen_index]
+
+    def don_armor(self):
+        new_armor: Armor = self.armor_selector()
+        if new_armor.durability >= 1:  # Check if broken.
             self.inventory.append(self.armor)  # Store current armor.
-            self.armor = new_armor
+            self.inventory.remove(new_armor)  # Take out new armor.
+            self.armor = new_armor  # Equip.
         else:
             print('This armor is too damaged to use.')
 
@@ -502,6 +528,28 @@ class ActorUnit:
         :return:
         """
         self.health += 3
+
+    def repair(self):
+        """
+        Repair player equipment.
+
+        :return: None
+        """
+        command = ''
+        while command not in ['a', 'armor', 'w', 'weapon']:
+            command = input('Repair (A)rmor or (W)eapon: ').lower()
+
+        if command in ['a', 'armor']:
+            item: Armor = self.armor_selector()
+            item.durability += item.durability_max * 0.05
+        elif command in ['w', 'weapon']:
+            item: Weapon = self.weapon_selector()
+            self.modify_weapon_durability(item, item.durability_max * 0.05)
+        else:
+            raise ValueError('Not sure how you got here.')
+        print(f'{item.name}: {item.durability} / {item.durability_max}')
+
+
 
     @property
     def armor_durability(self) -> float:
