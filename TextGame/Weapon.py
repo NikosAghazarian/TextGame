@@ -1,3 +1,9 @@
+import math as math
+import random as rand
+
+from TextGame.GameState import GameState
+
+
 class Weapon:
     """
     Class for weapon items.
@@ -11,7 +17,8 @@ class Weapon:
                  durability: int = 999,
                  hit_modifier: int = 0,
                  damage_type: str = 'Bludgeoning',
-                 is_ranged: bool = False):
+                 is_ranged: bool = False,
+                 tier: str = 'Common'):
 
         Weapon._instance_count += 1
 
@@ -22,15 +29,107 @@ class Weapon:
         self.hit_mod: int = hit_modifier
         self.dmg_type: str = damage_type
         self.is_ranged: bool = is_ranged
+        self.tier: str = tier
 
     @staticmethod
     def unit_count() -> int:
         """
-        Getter for the amount of ActorUnit instances alive.
+        Getter for the amount of Weapon instances alive.
 
         :return: _instance_count
         """
         return Weapon._instance_count
+
+    @staticmethod
+    def create_common_weapon(scaling: int) -> 'Weapon':
+        atk: int = int(math.floor(1 + scaling * 0.7))  # Linear.
+        dur: int = int(20 + 0.00002 * scaling ** 3)  # Cubic, but very slow start.
+        hit_mod: int = int(math.floor(scaling * 0.035))  # Linearly-increasing monotonic step.
+        dmg_type: str = GameState.damage_types[rand.randrange(0, 3)]  # Random normal dmg type.
+        ranged: bool = True if rand.random() > 0.95 else False  # 5% chance for ranged battle.
+
+        return Weapon('CommonWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Common')
+
+    @staticmethod
+    def create_uncommon_weapon(scaling: int) -> 'Weapon':
+        atk: int = int(math.floor(1 + scaling * 0.7))  # Linear.
+        dur: int = int(30 + 0.00002 * scaling ** 3)  # Cubic, but very slow start.
+        hit_mod: int = int(math.floor(scaling * 0.1))  # Linearly-increasing monotonic step.
+        dmg_type: str = GameState.damage_types[rand.randrange(0, 3)]  # Random normal dmg type.
+        ranged: bool = True if rand.random() > 0.9 else False  # 10% chance for ranged battle.
+
+        return Weapon('UncommonWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Uncommon')
+
+    @staticmethod
+    def create_rare_weapon(scaling: int) -> 'Weapon':
+        atk: int = int(math.floor(1 + scaling * 0.8))  # Linear.
+        dur: int = int(30 + 0.00003 * scaling ** 3)  # Cubic, but very slow start.
+        hit_mod: int = int(math.floor(scaling * 0.1))  # Linearly-increasing monotonic step.
+        dmg_type: str = GameState.damage_types[rand.randrange(0, len(GameState.damage_types))]  # Random dmg type.
+        ranged: bool = True if rand.random() > 0.85 else False  # 15 chance for ranged battle.
+
+        return Weapon('RareWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Rare')
+
+    @staticmethod
+    def create_legendary_weapon(scaling: int) -> 'Weapon':
+        atk: int = int(math.floor(1 + scaling * 0.9))  # Linear.
+        dur: int = int(100 + 0.00003 * scaling ** 3)  # Cubic, but very slow start.
+        hit_mod: int = int(math.floor(scaling * 0.1)) + 4  # Linearly-increasing monotonic step.
+        dmg_type: str = GameState.damage_types[rand.randrange(0, len(GameState.damage_types))]  # Random dmg type.
+        ranged: bool = True if rand.random() > 0.85 else False  # 15 chance for ranged battle.
+
+        return Weapon('LegendaryWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Legendary')
+
+    @staticmethod
+    def create_mythic_weapon(scaling: int) -> 'Weapon':
+        atk: int = int(math.floor(12 + 0.009 * scaling ** 2))  # Quadratic, outscales Rare@scaling70.
+        dur: int = int(scaling * 0.03 - 2)  # Cubic, but very slow start.
+        hit_mod: int = int(math.floor(scaling * 0.1)) + 7  # Linearly-increasing monotonic step.
+        dmg_type: str = GameState.damage_types[rand.randrange(0, len(GameState.damage_types))]  # Random dmg type.
+        ranged: bool = True if rand.random() > 0.85 else False  # 15 chance for ranged battle.
+
+        return Weapon('MythicWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Mythic')
+
+    @staticmethod
+    def weapon_gen(scaling: int) -> 'Weapon':
+        """
+        Generates weapons with random tiers and stats.
+
+        Common-70%, 78% before scaling>40
+        Uncommon-15%, 18.5% before scaling>70
+        Rare-8% after scaling>40, 10.5% before scaling>100
+        Legendary-4.5% after scaling>70
+        Mythical-2.5% after scaling>100
+
+
+        :param scaling: Scaling variable that controls the stat generation. Plus/Minus `0.1*scaling*(random()-0.5)`
+        :return: Generated Weapon.
+        """
+
+        scaling += scaling * 0.1 * (rand.random()-0.5)
+        roll: float = rand.random() * 100
+
+        if roll < 70:  # 70%, 78% before scaling>40
+            return Weapon.create_common_weapon(scaling)
+        elif roll < 85:  # 15%, 18.5% before scaling>70
+            return Weapon.create_uncommon_weapon(scaling)
+        elif roll < 93:  # 8% after scaling>40
+            if scaling > 40:
+                return Weapon.create_rare_weapon(scaling)
+            else:
+                return Weapon.create_common_weapon(scaling)
+        elif roll < 97.5:  # 4.5% after scaling>70
+            if scaling > 70:
+                return Weapon.create_legendary_weapon(scaling)
+            else:
+                return Weapon.create_uncommon_weapon(scaling)
+        elif roll < 100:  # 2.5% after scaling>100
+            if scaling > 100:
+                return Weapon.create_mythic_weapon(scaling)
+            else:
+                return Weapon.create_rare_weapon(scaling)
+        else:
+            return Weapon.create_common_weapon(scaling)
 
     @property
     def durability(self) -> float:
@@ -82,6 +181,7 @@ class Weapon:
     def __str__(self):
         x: str = (f'  {self.name}  \n'
                   f'++{"+"*len(self.name)}++\n'
+                  f'Tier:         {self.tier}\n'
                   f'Dmg:          {self.dmg}\n'
                   f'Durability:   {self.durability} / {self.durability_max}\n'
                   f'To-Hit Bonus: +{self.hit_mod}\n'
@@ -99,5 +199,6 @@ class Weapon:
             f'_durability: {self._durability}, '
             f'hit_mod: {self.hit_mod}, '
             f'dmg_type: {self.dmg_type}, '
-            f'is_ranged: {self.is_ranged})'
+            f'is_ranged: {self.is_ranged}, '
+            f'tier: {self.tier})'
                 )

@@ -80,13 +80,13 @@ class ActorUnit:
         if effective_dmg < 1:  # Minimum 1 damage on hit
             effective_dmg = 1
 
+        print(f'{effective_dmg} {damage_type.lower()} damage.')
+        self.health -= effective_dmg
+
         armor_damage: float = effective_dmg - self.armor.defense
         if armor_damage < 0:  # EffDmg. - 2 * defense durability reduction.
             armor_damage = 0
         self.armor_durability -= armor_damage
-
-        print(f'{effective_dmg} {damage_type.lower()} damage.')
-        self.health -= effective_dmg
 
     def target_selector(self) -> 'ActorUnit':
         banned_index = Menu.targeting(self)
@@ -221,7 +221,9 @@ class ActorUnit:
             if self is not GameState.player_actor:
                 GameState.actors.remove(self)
                 if self.hostility > 254:
+                    GameState.player_actor._xp += self._xp  # CHANGE THIS AFTER ADDING LEVELING
                     GameState.enemy_count -= 1
+
             else:
                 print("You have died...")
 
@@ -257,6 +259,6 @@ class ActorUnit:
             f'armor:{repr(self.armor)}, '
             f'_xp:{self._xp}, '
             f'_lvl:{self._lvl}, '
-            f'hostility:{self.hostility}'
+            f'hostility:{self.hostility}, '
             f'inventory:{self.inventory})'
         )

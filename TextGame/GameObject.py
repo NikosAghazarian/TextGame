@@ -60,6 +60,3 @@ class GameObject:
         Alias for GameObject.start_game().
         """
         GameObject.start_game()
-
-
-

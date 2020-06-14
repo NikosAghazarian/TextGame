@@ -56,7 +56,7 @@
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">ActorUnit</span></code> - Reference to the <code class="docutils literal notranslate"><span class="pre">ActorUnit</span></code> representing the player.</p>
 </dd>
 <dt class="field-odd">Is_active_game</dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">Bool</span></code> - Flag variable. Determined at start of turn cycle if player HP==0.</p>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code> - Flag variable. Determined at start of turn cycle if player HP==0.</p>
 </dd>
 <dt class="field-even">Nonfree_action_taken</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Bool</span></code> - Flag variable. Used to determine whether hostile entities get to act.</p>
@@ -135,7 +135,7 @@
 <span id="textgame-actorunit"></span><h1>TextGame ActorUnit<a class="headerlink" href="#module-TextGame.ActorUnit" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="TextGame.ActorUnit.ActorUnit">
-<em class="property">class </em><code class="sig-prename descclassname">TextGame.ActorUnit.</code><code class="sig-name descname">ActorUnit</code><span class="sig-paren">(</span><em class="sig-param">name: str = 'default'</em>, <em class="sig-param">health: int = 1</em>, <em class="sig-param">starter_weapon: TextGame.Weapon.Weapon = Weapon(name:Fists</em>, <em class="sig-param">_dmg:1</em>, <em class="sig-param">durability_max: 999</em>, <em class="sig-param">_durability: 999</em>, <em class="sig-param">hit_mod: 0</em>, <em class="sig-param">dmg_type: Bludgeoning</em>, <em class="sig-param">is_ranged: False)</em>, <em class="sig-param">starter_armor: TextGame.Armor.Armor = Armor(name:Loincloth</em>, <em class="sig-param">durability_max:999</em>, <em class="sig-param">_durability:999</em>, <em class="sig-param">_resistances:[]</em>, <em class="sig-param">_defense:2</em>, <em class="sig-param">AC:5)</em>, <em class="sig-param">level: int = 0</em>, <em class="sig-param">experience: int = 1</em>, <em class="sig-param">hostility: int = 170</em><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.ActorUnit.ActorUnit" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">TextGame.ActorUnit.</code><code class="sig-name descname">ActorUnit</code><span class="sig-paren">(</span><em class="sig-param">name: str = 'default'</em>, <em class="sig-param">health: int = 1</em>, <em class="sig-param">starter_weapon: TextGame.Weapon.Weapon = Weapon(name:Fists</em>, <em class="sig-param">_dmg:1</em>, <em class="sig-param">durability_max: 999</em>, <em class="sig-param">_durability: 999</em>, <em class="sig-param">hit_mod: 0</em>, <em class="sig-param">dmg_type: Bludgeoning</em>, <em class="sig-param">is_ranged: False</em>, <em class="sig-param">tier: Common)</em>, <em class="sig-param">starter_armor: TextGame.Armor.Armor = Armor(name:Loincloth</em>, <em class="sig-param">durability_max:99999</em>, <em class="sig-param">_durability:99999</em>, <em class="sig-param">_resistances:[]</em>, <em class="sig-param">_defense:2</em>, <em class="sig-param">AC:5)</em>, <em class="sig-param">level: int = 0</em>, <em class="sig-param">experience: int = 1</em>, <em class="sig-param">hostility: int = 170</em><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.ActorUnit.ActorUnit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents any and all controllable and non-controllable entities.</p>
 <dl class="py method">
 <dt id="TextGame.ActorUnit.ActorUnit.heal">
@@ -188,8 +188,19 @@
 <span id="textgame-armor"></span><h1>TextGame Armor<a class="headerlink" href="#module-TextGame.Armor" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="TextGame.Armor.Armor">
-<em class="property">class </em><code class="sig-prename descclassname">TextGame.Armor.</code><code class="sig-name descname">Armor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">durability</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">999</span></em>, <em class="sig-param"><span class="n">resistances</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">defense</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">armor_class</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.Armor.Armor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">TextGame.Armor.</code><code class="sig-name descname">Armor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">durability</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">99999</span></em>, <em class="sig-param"><span class="n">resistances</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">defense</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">armor_class</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.Armor.Armor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Armor item class.</p>
+<dl class="py method">
+<dt id="TextGame.Armor.Armor.unit_count">
+<em class="property">static </em><code class="sig-name descname">unit_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#TextGame.Armor.Armor.unit_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the amount of Weapon instances alive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>_instance_count</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -197,7 +208,7 @@
 <span id="textgame-weapon"></span><h1>TextGame Weapon<a class="headerlink" href="#module-TextGame.Weapon" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="TextGame.Weapon.Weapon">
-<em class="property">class </em><code class="sig-prename descclassname">TextGame.Weapon.</code><code class="sig-name descname">Weapon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">damage</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">durability</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">999</span></em>, <em class="sig-param"><span class="n">hit_modifier</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">damage_type</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Bludgeoning'</span></em>, <em class="sig-param"><span class="n">is_ranged</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.Weapon.Weapon" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">TextGame.Weapon.</code><code class="sig-name descname">Weapon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">damage</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">durability</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">999</span></em>, <em class="sig-param"><span class="n">hit_modifier</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">damage_type</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Bludgeoning'</span></em>, <em class="sig-param"><span class="n">is_ranged</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">tier</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Common'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.Weapon.Weapon" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class for weapon items.</p>
 <dl class="py method">
 <dt id="TextGame.Weapon.Weapon.dmg">
@@ -224,10 +235,29 @@
 <dl class="py method">
 <dt id="TextGame.Weapon.Weapon.unit_count">
 <em class="property">static </em><code class="sig-name descname">unit_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#TextGame.Weapon.Weapon.unit_count" title="Permalink to this definition">¶</a></dt>
-<dd><p>Getter for the amount of ActorUnit instances alive.</p>
+<dd><p>Getter for the amount of Weapon instances alive.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>_instance_count</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="TextGame.Weapon.Weapon.weapon_gen">
+<em class="property">static </em><code class="sig-name descname">weapon_gen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scaling</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#TextGame.Weapon.Weapon" title="TextGame.Weapon.Weapon">TextGame.Weapon.Weapon</a><a class="headerlink" href="#TextGame.Weapon.Weapon.weapon_gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates weapons with random tiers and stats.</p>
+<p>Common-70%, 78% before scaling&gt;40
+Uncommon-15%, 18.5% before scaling&gt;70
+Rare-8% after scaling&gt;40, 10.5% before scaling&gt;100
+Legendary-4.5% after scaling&gt;70
+Mythical-2.5% after scaling&gt;100</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scaling</strong> – Scaling variable that controls the stat generation. Plus/Minus <cite>0.1*scaling*(random()-0.5)</cite></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Generated Weapon.</p>
 </dd>
 </dl>
 </dd></dl>

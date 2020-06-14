@@ -10,7 +10,7 @@ class Armor:
 
     def __init__(self,
                  name: str = 'default',
-                 durability: int = 999,
+                 durability: int = 99999,
                  resistances=None,
                  defense: int = 0,
                  armor_class: int = 0):
@@ -26,6 +26,15 @@ class Armor:
         self._resistances: list = resistances
         self._defense: int = defense
         self.AC: int = armor_class  # Armor Class
+
+    @staticmethod
+    def unit_count() -> int:
+        """
+        Getter for the amount of Weapon instances alive.
+
+        :return: _instance_count
+        """
+        return Armor._instance_count
 
     @property
     def durability(self):
