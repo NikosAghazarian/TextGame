@@ -6,6 +6,9 @@ from TextGame.ActorUnit import ActorUnit
 
 
 class Shop(ActorUnit):
+    """
+    Shop/Merchant class.
+    """
 
     def __init__(self):
         x: int = GameState.turn_count

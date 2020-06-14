@@ -2,6 +2,9 @@ from TextGame.GameState import GameState
 
 
 class Armor:
+    """
+    Armor item class.
+    """
 
     _instance_count = 0
 
