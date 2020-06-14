@@ -50,7 +50,7 @@ class Menu:
         index: int = 0
         for armor in armors:
             print(f'ID-{index:02} | {armor.name}: Def-{armor.defense} AC-{armor.AC}\n'
-                  f'      | {" " * (len(armor.name) + 1)} Dur-{armor.durability}/{armor.durability_max} Res-{", ".join(armor.resistances)}\n'
+                  f'      | {" " * (len(armor.name) + 1)} Dur-{armor.durability}/{armor.durability_max} Res-{", ".join(armor.resistances)}'
                   )
             index += 1
 
@@ -94,7 +94,7 @@ class Menu:
             'attack': lambda: Menu.Actions.attack(),
             'a': lambda: Menu.Actions.attack(),
             'pass': lambda: 0,
-            'p': lambda: 0,
+            'z': lambda: 0,
             'status': lambda: Menu.Actions.status(),
             's': lambda: Menu.Actions.status(),
             'hunt enemy': lambda: 0,  # Menu.Actions.hunt_enemy(),
@@ -122,5 +122,7 @@ class Menu:
             'repair',
             'r',
             'heal',
-            'l'
+            'l',
+            'pass',
+            'z'
         ]

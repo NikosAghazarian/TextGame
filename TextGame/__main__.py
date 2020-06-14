@@ -7,7 +7,7 @@ import random as rand
 
 from TextGame.GameState import GameState
 from TextGame.GameObject import GameObject
-#GameObject = GameObject.GameObject
+
 
 ###################################
 # Code Execution                  #

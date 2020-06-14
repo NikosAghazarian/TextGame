@@ -13,15 +13,15 @@ class Inventory:
 
     @gold.setter
     def gold(self, new_value: int):
-        if new_value > 0:
-            self._gold = new_value
-        else:
+        if new_value < 0:
             raise ValueError('Gold cannot be negative.')
+        else:
+            self._gold = new_value
 
-    def store(self, item):
+    def store(self, item) -> None:
         self.storedItems.append(item)
 
-    def retrieve(self, item_name):
+    def retrieve(self, item_name) -> None:
         try:
             item = next(x for x in self.storedItems if x == item_name)  # Gets first match from inventory
         except StopIteration:

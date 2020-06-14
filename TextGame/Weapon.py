@@ -1,4 +1,7 @@
 class Weapon:
+    """
+    Class for weapon items.
+    """
 
     _instance_count = 0
 
@@ -25,7 +28,7 @@ class Weapon:
         """
         Getter for the amount of ActorUnit instances alive.
 
-        :return: Unit count stored in class (not per-instance).
+        :return: _instance_count
         """
         return Weapon._instance_count
 
@@ -39,13 +42,12 @@ class Weapon:
         return self._durability
 
     @durability.setter
-    def durability(self, new_durability: float):
+    def durability(self, new_durability: float) -> None:
         """
         Setter for _durability. Contains logic for breakage and negative(invalid) durabilities.
         Also contains logic for excess repair.
 
         :param new_durability: New value.
-        :return: None
         """
         self._durability = new_durability
         if self._durability < 1:
@@ -62,12 +64,19 @@ class Weapon:
 
         :return: If durability is 0, returns 1, otherwise returns _dmg.
         """
+
         if self.durability < 1:
             return 1
         return self._dmg
 
     @dmg.setter
-    def dmg(self, new_dmg: float):
+    def dmg(self, new_dmg: float) -> None:
+        """
+        Setter for _dmg.
+
+        :param new_dmg: Value to set to.
+        """
+
         self._dmg = new_dmg
 
     def __str__(self):

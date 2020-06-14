@@ -13,15 +13,15 @@ class Events:
     """
 
     @staticmethod
-    def generate_enemy(is_boss: bool = False):
+    def generate_enemy(is_boss: bool = False) -> None:
         """
         Generates an enemy actor with stats scaled with GameObject.turn_count.
 
         TODO: Move Actor stat gen. to new file for scalability. Move gear stat gen. to respective classes.
 
         :param is_boss: Controls whether to spawn a standard mob or a boss mob.
-        :return: None
         """
+
         x: int = GameState.turn_count
         if is_boss:
             # Boss Stat Block
@@ -67,7 +67,7 @@ class Events:
         """
         Rolls for a random game event.
 
-        :return: True is event occurs, otherwise returns False.
+        :return: True if event occurs, otherwise returns False.
         """
         roll = rand.random()*100
         if roll < 50:

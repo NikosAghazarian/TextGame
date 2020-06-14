@@ -187,7 +187,7 @@ class ActorUnit:
         self.armor.durability = new_durability
         if self.armor.durability < 1:
             self.inventory.store(self.armor)  # Store current armor.
-            self.armor = Armor()  # When armor breaks, equip loincloth
+            self.armor = Armor('Loincloth', defense=2, armor_class=5)  # When armor breaks, equip loincloth
 
     def modify_weapon_durability(self, weapon: Weapon, durability_delta: float):
         if weapon in self.weapons:
