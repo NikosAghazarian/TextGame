@@ -76,7 +76,6 @@ class ActorUnit:
         if damage_type in self.armor.resistances:
             effective_dmg *= 0.66  # Resistance grants 33% dmg reduction.
         effective_dmg -= self.armor.defense
-
         if effective_dmg < 1:  # Minimum 1 damage on hit
             effective_dmg = 1
 
