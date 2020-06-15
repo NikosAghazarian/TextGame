@@ -43,28 +43,28 @@ class Weapon:
     @staticmethod
     def create_common_weapon(scaling: int) -> 'Weapon':
         atk: int = int(math.floor(1 + scaling * 0.7))  # Linear.
-        dur: int = int(20 + 0.00002 * scaling ** 3)  # Cubic, but very slow start.
+        dur: int = int(10 + 0.00002 * scaling ** 3)  # Cubic, but very slow start.
         hit_mod: int = int(math.floor(scaling * 0.035))  # Linearly-increasing monotonic step.
-        dmg_type: str = GameState.damage_types[rand.randrange(0, 3)]  # Random normal dmg type.
+        dmg_type: str = GameState.damage_types[rand.randrange(0, 4)]  # Random normal dmg type.
         ranged: bool = True if rand.random() > 0.95 else False  # 5% chance for ranged battle.
 
         return Weapon('CommonWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Common')
 
     @staticmethod
     def create_uncommon_weapon(scaling: int) -> 'Weapon':
-        atk: int = int(math.floor(1 + scaling * 0.7))  # Linear.
-        dur: int = int(30 + 0.00002 * scaling ** 3)  # Cubic, but very slow start.
-        hit_mod: int = int(math.floor(scaling * 0.1))  # Linearly-increasing monotonic step.
-        dmg_type: str = GameState.damage_types[rand.randrange(0, 3)]  # Random normal dmg type.
+        atk: int = int(math.floor(2 + scaling * 0.7))  # Linear.
+        dur: int = int(15 + 0.00002 * scaling ** 3)  # Cubic, but very slow start.
+        hit_mod: int = int(math.floor(scaling * 0.07))  # Linearly-increasing monotonic step.
+        dmg_type: str = GameState.damage_types[rand.randrange(0, 4)]  # Random normal dmg type.
         ranged: bool = True if rand.random() > 0.9 else False  # 10% chance for ranged battle.
 
         return Weapon('UncommonWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Uncommon')
 
     @staticmethod
     def create_rare_weapon(scaling: int) -> 'Weapon':
-        atk: int = int(math.floor(1 + scaling * 0.8))  # Linear.
+        atk: int = int(math.floor(3 + scaling * 0.8))  # Linear.
         dur: int = int(30 + 0.00003 * scaling ** 3)  # Cubic, but very slow start.
-        hit_mod: int = int(math.floor(scaling * 0.1))  # Linearly-increasing monotonic step.
+        hit_mod: int = int(math.floor(scaling * 0.07)) + 1  # Linearly-increasing monotonic step.
         dmg_type: str = GameState.damage_types[rand.randrange(0, len(GameState.damage_types))]  # Random dmg type.
         ranged: bool = True if rand.random() > 0.85 else False  # 15 chance for ranged battle.
 
@@ -72,9 +72,9 @@ class Weapon:
 
     @staticmethod
     def create_legendary_weapon(scaling: int) -> 'Weapon':
-        atk: int = int(math.floor(1 + scaling * 0.9))  # Linear.
+        atk: int = int(math.floor(5 + scaling * 0.9))  # Linear.
         dur: int = int(100 + 0.00003 * scaling ** 3)  # Cubic, but very slow start.
-        hit_mod: int = int(math.floor(scaling * 0.1)) + 4  # Linearly-increasing monotonic step.
+        hit_mod: int = int(math.floor(scaling * 0.075)) + 4  # Linearly-increasing monotonic step.
         dmg_type: str = GameState.damage_types[rand.randrange(0, len(GameState.damage_types))]  # Random dmg type.
         ranged: bool = True if rand.random() > 0.85 else False  # 15 chance for ranged battle.
 
@@ -82,7 +82,7 @@ class Weapon:
 
     @staticmethod
     def create_mythic_weapon(scaling: int) -> 'Weapon':
-        atk: int = int(math.floor(12 + 0.009 * scaling ** 2))  # Quadratic, outscales Rare@scaling70.
+        atk: int = int(math.floor(12 + 0.009 * scaling ** 2))  # Quadratic, out-scales Rare@scaling72, Legend@scaling85.
         dur: int = int(scaling * 0.03 - 2)  # Cubic, but very slow start.
         hit_mod: int = int(math.floor(scaling * 0.1)) + 7  # Linearly-increasing monotonic step.
         dmg_type: str = GameState.damage_types[rand.randrange(0, len(GameState.damage_types))]  # Random dmg type.
@@ -96,11 +96,14 @@ class Weapon:
         Generates weapons with random tiers and stats.
 
         Common-70%, 78% before scaling>40
-        Uncommon-15%, 18.5% before scaling>70
-        Rare-8% after scaling>40, 10.5% before scaling>100
-        Legendary-4.5% after scaling>70
-        Mythical-2.5% after scaling>100
 
+        Uncommon-15%, 18.5% before scaling>70
+
+        Rare-8% after scaling>40, 10.5% before scaling>100
+
+        Legendary-4.5% after scaling>70
+
+        Mythical-2.5% after scaling>100
 
         :param scaling: Scaling variable that controls the stat generation. Plus/Minus `0.1*scaling*(random()-0.5)`
         :return: Generated Weapon.

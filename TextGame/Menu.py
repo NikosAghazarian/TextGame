@@ -11,10 +11,11 @@ class Menu:
         while True:
             user_command = input('Give your command: ').lower()
 
+            if user_command in Menu.Actions.nonfree_actions:  # Enemies only attack if player acts.
+                GameState.nonfree_action_taken = True
+
             if GameState.enemy_count != 0 and user_command in Menu.Actions.combat_actions:  # Combat Menu.
                 Menu.Actions.combat_actions[user_command]()
-                if user_command in Menu.Actions.nonfree_actions:  # Enemies only attack if player does.
-                    GameState.nonfree_action_taken = True
                 break
             elif user_command in Menu.Actions.noncombat_actions:  # Non-combat Menu.
                 Menu.Actions.noncombat_actions[user_command]()
@@ -30,7 +31,7 @@ class Menu:
         for actor in GameState.actors:
             if actor is not attacker:
                 print(f'ID-{index:02} | {actor.name}: HP-{actor.health} Def-{actor.armor.defense}\n'
-                      f'      | {" " * (len(actor.name) + 1)} AC-{actor.armor.defense} Res-{", ".join(actor.armor.resistances)}')
+                      f'      | {" " * (len(actor.name) + 1)} AC-{actor.armor.AC} Res-{", ".join(actor.armor.resistances)}')
             else:
                 banned_index: int = index
             index += 1

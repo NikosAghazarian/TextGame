@@ -25,14 +25,12 @@ class Events:
         x: int = GameState.turn_count  # Scaling variable.
         if is_boss:
             # Boss Stat Block
-            x += 3
+            x += x * 0.1
             hp: int = int(15 + x * 0.5 + 0.02 * x**2)  # Quadratic
 
             weapon: Weapon = Weapon.weapon_gen(x)
             default_weapon: Weapon = Weapon('Fists', 5, hit_modifier=2)
-
-            res: str = GameState.damage_types[rand.randrange(0, len(GameState.damage_types))]  # Picks a random resistance
-            armor: Armor = Armor('Heavy Chains', 50, [res], 3, 3)
+            armor: Armor = Armor.armor_gen(x)
 
             boss: ActorUnit = ActorUnit('Mantissa the Lightly-chilled', hp, weapon, armor, hostility=555)
             boss.weapons.append(default_weapon)
@@ -45,10 +43,10 @@ class Events:
             min_hp: int = int(3+(x**2)*0.009)
             max_hp: int = int(11+(x**2)*0.02)
             hp: int = rand.randint(min_hp, max_hp)
+
             weapon: Weapon = Weapon.weapon_gen(x)
             default_weapon: Weapon = Weapon('Fists')
-
-            armor: Armor = Armor('Wooden Plate', 8, None, 2, 2)
+            armor: Armor = Armor.armor_gen(x)
 
             mob: ActorUnit = ActorUnit('Goblin', hp, weapon, armor, hostility=555)
             mob.weapons.append(default_weapon)
