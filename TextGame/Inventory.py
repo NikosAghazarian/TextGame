@@ -21,7 +21,7 @@ class Inventory:
     def store(self, item) -> None:
         self.storedItems.append(item)
 
-    def retrieve(self, item_name) -> None:
+    def retrieve(self, item_name) -> None:  # fix this
         try:
             item = next(x for x in self.storedItems if x == item_name)  # Gets first match from inventory
         except StopIteration:

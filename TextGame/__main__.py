@@ -19,7 +19,7 @@ rand.seed()
 GameObject.start_game()
 
 while True:
-    GameObject.turn()
+    GameObject.round()
     if not GameState.is_active_game:
         user_continue = input("Continue? [Y/n]").lower()
         if user_continue == "y":

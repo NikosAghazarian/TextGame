@@ -15,7 +15,7 @@ class GameState:
     damage_types: list = ['Slicing', 'Piercing', 'Bludgeoning', 'Fire', 'Cold', 'Mental']
     equip_tiers: list = ['Common', 'Uncommon', 'Rare', 'Legendary', 'Mythic']
     actors: list = []
-    turn_count: int = 0
+    round_count: int = 0
     player_actor: 'ActorUnit' = None  # Is effectively const after assignment. Reassigned only on reset.
     is_active_game: bool = True
     nonfree_action_taken: bool = False

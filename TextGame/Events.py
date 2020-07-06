@@ -1,8 +1,7 @@
-import math as math
 import random as rand
 
 from TextGame.GameState import GameState
-from TextGame.ActorUnit import ActorUnit
+from TextGame.UnitTypes import Enemy
 from TextGame.Armor import Armor
 from TextGame.Weapon import Weapon
 
@@ -17,12 +16,10 @@ class Events:
         """
         Generates an enemy actor with stats scaled with GameObject.turn_count.
 
-        TODO: Move Actor stat gen. to new file for scalability. Move gear stat gen. to respective classes.
-
         :param is_boss: Controls whether to spawn a standard mob or a boss mob.
         """
 
-        x: int = GameState.turn_count  # Scaling variable.
+        x: int = GameState.round_count  # Scaling variable.
         if is_boss:
             # Boss Stat Block
             x += x * 0.1
@@ -32,7 +29,7 @@ class Events:
             default_weapon: Weapon = Weapon('Fists', 5, hit_modifier=2)
             armor: Armor = Armor.armor_gen(x)
 
-            boss: ActorUnit = ActorUnit('Mantissa the Lightly-chilled', hp, weapon, armor, hostility=555)
+            boss: Enemy = Enemy('Mantissa the Lightly-chilled', hp, weapon, armor, x)
             boss.weapons.append(default_weapon)
 
             print(f'{boss.name} has appeared!\n{boss}')
@@ -48,7 +45,7 @@ class Events:
             default_weapon: Weapon = Weapon('Fists')
             armor: Armor = Armor.armor_gen(x)
 
-            mob: ActorUnit = ActorUnit('Goblin', hp, weapon, armor, hostility=555)
+            mob: Enemy = Enemy('Goblin', hp, weapon, armor, x)
             mob.weapons.append(default_weapon)
 
             print(f'A {mob.name.lower()} approaches.')
@@ -69,7 +66,7 @@ class Events:
             Events.generate_enemy()
             return True
         elif roll < 65:
-            if GameState.turn_count > 30:
+            if GameState.round_count > 30:
                 Events.generate_enemy(is_boss=True)
                 return True
         else:

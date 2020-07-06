@@ -25,15 +25,15 @@ class Menu:
                 continue
 
     @staticmethod
-    def targeting(attacker: 'ActorUnit') -> int:
+    def targeting() -> int:
         index: int = 0
-        banned_index: int = 1
+        banned_index: list = [0]
         for actor in GameState.actors:
-            if actor is not attacker:
+            if actor.hostility > 255:
                 print(f'ID-{index:02} | {actor.name}: HP-{actor.health} Def-{actor.armor.defense}\n'
                       f'      | {" " * (len(actor.name) + 1)} AC-{actor.armor.AC} Res-{", ".join(actor.armor.resistances)}')
             else:
-                banned_index: int = index
+                banned_index.append(index)
             index += 1
         return banned_index
 

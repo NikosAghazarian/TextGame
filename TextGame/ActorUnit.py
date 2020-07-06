@@ -21,12 +21,12 @@ class ActorUnit:
                  starter_weapon: Weapon = Weapon('Fists'),
                  starter_armor: Armor = Armor('Loincloth', defense=2, armor_class=5),
                  level: int = 0,
-                 experience: int = 1,
-                 hostility: int = 170):
+                 experience: int = 1):
 
         ActorUnit._instance_count += 1
 
-        self.name = name
+        self.name: str = name
+        self.isPlayer: bool = False
 
         self.health_max: int = health
         self._health: float = health
@@ -38,7 +38,7 @@ class ActorUnit:
 
         # Hostility towards the player.
         # 0-99:Friendly; 100-174:Neutral; 175-254:Disgruntled ; 255+:hostile
-        self.hostility: int = hostility
+
 
         self.inventory: Inventory = Inventory()
 
@@ -51,12 +51,16 @@ class ActorUnit:
         """
         return ActorUnit._instance_count
 
-    def attack(self, target: 'ActorUnit' = None):
-        if self is not GameState.player_actor:  # Player vs. AI selection logic.
-            target: ActorUnit = target  # AI
-        else:
-            target: ActorUnit = self.target_selector()  # Player
+    def turn(self):
+        if self.isPlayer:
+            Menu.menu_logic()
+        else:  # actions to occur on every enemy turn
+            if GameState.nonfree_action_taken:
 
+                self.attack()
+
+    def attack(self):
+        target: ActorUnit = self.target_selector()  # Player
         weapon: Weapon = self.weapon_selector()
 
         if weapon.is_ranged:
@@ -88,11 +92,13 @@ class ActorUnit:
         self.armor_durability -= armor_damage
 
     def target_selector(self) -> 'ActorUnit':
-        banned_index = Menu.targeting(self)
+        if not self.isPlayer:
+            return GameState.player_actor
 
+        banned_index = Menu.targeting()
         chosen_index: int = -1
         max_index: int = len(GameState.actors)-1
-        while chosen_index <= 0 or max_index < chosen_index or chosen_index == banned_index:
+        while chosen_index <= 0 or max_index < chosen_index or chosen_index in banned_index:
             try:
                 chosen_index = int(input('Choose a valid target ID: '))
             except ValueError:

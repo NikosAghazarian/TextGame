@@ -84,16 +84,15 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="TextGame.GameObject.GameObject.start_game">
-<em class="property">static </em><code class="sig-name descname">start_game</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#TextGame.GameObject.GameObject.start_game" title="Permalink to this definition">¶</a></dt>
-<dd><p>Static method for initializing the game state.</p>
+<dt id="TextGame.GameObject.GameObject.round">
+<em class="property">static </em><code class="sig-name descname">round</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#TextGame.GameObject.GameObject.round" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes turns sequentially for each actor.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="TextGame.GameObject.GameObject.turn">
-<em class="property">static </em><code class="sig-name descname">turn</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#TextGame.GameObject.GameObject.turn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes turns sequentially for each actor.</p>
-<p>TODO: Consider creating turn method on ActorUnit to move all Menu dependency off of GameObject.</p>
+<dt id="TextGame.GameObject.GameObject.start_game">
+<em class="property">static </em><code class="sig-name descname">start_game</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#TextGame.GameObject.GameObject.start_game" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static method for initializing the game state.</p>
 </dd></dl>
 
 </dd></dl>
@@ -109,7 +108,6 @@
 <dt id="TextGame.Events.Events.generate_enemy">
 <em class="property">static </em><code class="sig-name descname">generate_enemy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">is_boss</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#TextGame.Events.Events.generate_enemy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates an enemy actor with stats scaled with GameObject.turn_count.</p>
-<p>TODO: Move Actor stat gen. to new file for scalability. Move gear stat gen. to respective classes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>is_boss</strong> – Controls whether to spawn a standard mob or a boss mob.</p>
@@ -135,7 +133,7 @@
 <span id="textgame-actorunit"></span><h1>TextGame ActorUnit<a class="headerlink" href="#module-TextGame.ActorUnit" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="TextGame.ActorUnit.ActorUnit">
-<em class="property">class </em><code class="sig-prename descclassname">TextGame.ActorUnit.</code><code class="sig-name descname">ActorUnit</code><span class="sig-paren">(</span><em class="sig-param">name: str = 'default'</em>, <em class="sig-param">health: int = 1</em>, <em class="sig-param">starter_weapon: TextGame.Weapon.Weapon = Weapon(name:Fists</em>, <em class="sig-param">_dmg:1</em>, <em class="sig-param">durability_max: 999</em>, <em class="sig-param">_durability: 999</em>, <em class="sig-param">hit_mod: 0</em>, <em class="sig-param">dmg_type: Bludgeoning</em>, <em class="sig-param">is_ranged: False</em>, <em class="sig-param">tier: Common)</em>, <em class="sig-param">starter_armor: TextGame.Armor.Armor = Armor(name:Loincloth</em>, <em class="sig-param">durability_max:99999</em>, <em class="sig-param">_durability:99999</em>, <em class="sig-param">_resistances:[]</em>, <em class="sig-param">_defense:2</em>, <em class="sig-param">AC:5)</em>, <em class="sig-param">level: int = 0</em>, <em class="sig-param">experience: int = 1</em>, <em class="sig-param">hostility: int = 170</em><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.ActorUnit.ActorUnit" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">TextGame.ActorUnit.</code><code class="sig-name descname">ActorUnit</code><span class="sig-paren">(</span><em class="sig-param">name: str = 'default'</em>, <em class="sig-param">health: int = 1</em>, <em class="sig-param">starter_weapon: TextGame.Weapon.Weapon = Weapon(name:Fists</em>, <em class="sig-param">_dmg:1</em>, <em class="sig-param">durability_max: 999</em>, <em class="sig-param">_durability: 999</em>, <em class="sig-param">hit_mod: 0</em>, <em class="sig-param">dmg_type: Bludgeoning</em>, <em class="sig-param">is_ranged: False</em>, <em class="sig-param">tier: Common)</em>, <em class="sig-param">starter_armor: TextGame.Armor.Armor = Armor(name:Loincloth</em>, <em class="sig-param">durability_max:99999</em>, <em class="sig-param">_durability:99999</em>, <em class="sig-param">_resistances:[]</em>, <em class="sig-param">_defense:2</em>, <em class="sig-param">AC:5)</em>, <em class="sig-param">level: int = 0</em>, <em class="sig-param">experience: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.ActorUnit.ActorUnit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents any and all controllable and non-controllable entities.</p>
 <dl class="py method">
 <dt id="TextGame.ActorUnit.ActorUnit.heal">
@@ -296,14 +294,8 @@
 <div class="section" id="module-TextGame.Inventory">
 <span id="textgame-inventory"></span><h1>TextGame Inventory<a class="headerlink" href="#module-TextGame.Inventory" title="Permalink to this headline">¶</a></h1>
 </div>
-<div class="section" id="module-TextGame.Shop">
-<span id="textgame-shop"></span><h1>TextGame Shop<a class="headerlink" href="#module-TextGame.Shop" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="TextGame.Shop.Shop">
-<em class="property">class </em><code class="sig-prename descclassname">TextGame.Shop.</code><code class="sig-name descname">Shop</code><a class="headerlink" href="#TextGame.Shop.Shop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shop/Merchant class.</p>
-</dd></dl>
-
+<div class="section" id="textgame-shop">
+<h1>TextGame Shop<a class="headerlink" href="#textgame-shop" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
