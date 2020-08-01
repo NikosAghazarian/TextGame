@@ -25,7 +25,7 @@ class GameObject:
         GameState.merchant_present = False
 
         # Player Init.
-        weapon: Weapon = Weapon('Sword-like Catfish', 6, 2, 1, damage_type='Slicing')
+        weapon: Weapon = Weapon('Sword-like Catfish', 200, 999, 1, damage_type='Slicing')
         GameState.player_actor = Player(name=player_name, health=2**20, starter_weapon=weapon)
         GameState.player_actor.weapons.append(Weapon('Fists'))
         GameState.player_actor.isPlayer = True

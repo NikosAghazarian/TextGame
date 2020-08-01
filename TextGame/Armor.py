@@ -60,7 +60,7 @@ class Armor:
     @staticmethod
     def create_rare_armor(scaling: int):
         dur: int = int(50 + 0.00003 * scaling ** 3)  # Cubic, but very slow start.
-        res: str = GameState.damage_types[rand.randrange(0, 4)]  # Picks a random normal resistance
+        res: list = [GameState.damage_types[rand.randrange(0, 4)]]  # Picks a random normal resistance
         defense: int = int(math.ceil(0.8 * pow(math.log10(1 + scaling ** 2), 2.45)))
         ac: int = int(math.floor(scaling * 0.1)) + 2
         return Armor('RareArmor', dur, res, defense, ac, 'Rare')
@@ -68,7 +68,7 @@ class Armor:
     @staticmethod
     def create_legendary_armor(scaling: int):
         dur: int = int(200 + 0.00003 * scaling ** 3)  # Cubic, but very slow start.
-        res: str = rand.sample(GameState.damage_types, range(1, 4))  # Picks 1-3 random resistances
+        res: list = rand.sample(GameState.damage_types, 1)  # Picks 1-3 random resistances
         defense: int = int(math.ceil(0.9 * pow(math.log10(1 + scaling ** 2), 2.45)))
         ac: int = int(math.floor(scaling * 0.1)) + 3
         return Armor('LegendaryArmor', dur, res, defense, ac, 'Legendary')
@@ -76,7 +76,7 @@ class Armor:
     @staticmethod
     def create_mythic_armor(scaling: int):
         dur: int = int(2 + 0.0003 * scaling ** 2)  # Quadratic, but very slow start.
-        res: str = rand.sample(GameState.damage_types, range(1, 4))  # Picks 1-3 random resistances
+        res: list = rand.sample(GameState.damage_types, 3)  # Picks 3 random resistances
         defense: int = int(math.ceil(0.6 * pow(math.log10(1 + scaling ** 2), 2.35)))
         ac: int = int(math.floor(scaling * 0.1)) + 9
         return Armor('MythicArmor', dur, res, defense, ac, 'Mythic')

@@ -19,37 +19,36 @@ class Events:
         :param is_boss: Controls whether to spawn a standard mob or a boss mob.
         """
 
-        x: int = GameState.round_count  # Scaling variable.
+        scaling: int = GameState.round_count  # Scaling variable.
         if is_boss:
             # Boss Stat Block
-            x += x * 0.1
-            hp: int = int(15 + x * 0.5 + 0.02 * x**2)  # Quadratic
+            scaling += scaling * 0.1
+            hp: int = int(15 + scaling * 0.5 + 0.02 * scaling ** 2)  # Quadratic
 
-            weapon: Weapon = Weapon.weapon_gen(x)
+            weapon: Weapon = Weapon.weapon_gen(scaling)
             default_weapon: Weapon = Weapon('Fists', 5, hit_modifier=2)
-            armor: Armor = Armor.armor_gen(x)
+            armor: Armor = Armor.armor_gen(scaling)
 
-            boss: Enemy = Enemy('Mantissa the Lightly-chilled', hp, weapon, armor, x)
+            boss: Enemy = Enemy('Mantissa the Lightly-chilled', hp, weapon, armor)
             boss.weapons.append(default_weapon)
 
             print(f'{boss.name} has appeared!\n{boss}')
-            GameState.actors.append(boss)
 
         else:
             # Mob Stat Block
-            min_hp: int = int(3+(x**2)*0.009)
-            max_hp: int = int(11+(x**2)*0.02)
+            min_hp: int = int(3+(scaling**2)*0.009)
+            max_hp: int = int(11+(scaling**2)*0.02)
             hp: int = rand.randint(min_hp, max_hp)
 
-            weapon: Weapon = Weapon.weapon_gen(x)
+            weapon: Weapon = Weapon.weapon_gen(scaling)
             default_weapon: Weapon = Weapon('Fists')
-            armor: Armor = Armor.armor_gen(x)
+            armor: Armor = Armor.armor_gen(scaling)
 
-            mob: Enemy = Enemy('Goblin', hp, weapon, armor, x)
+            mob: Enemy = Enemy('Goblin', hp, weapon, armor)
             mob.weapons.append(default_weapon)
 
             print(f'A {mob.name.lower()} approaches.')
-            GameState.actors.append(mob)
+
         GameState.enemy_count += 1
 
     @staticmethod
@@ -69,5 +68,6 @@ class Events:
             if GameState.round_count > 30:
                 Events.generate_enemy(is_boss=True)
                 return True
+            return False
         else:
             return False

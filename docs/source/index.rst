@@ -10,47 +10,62 @@ Welcome to TextGame's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-TextGame GameState
+GameState
 ==================
 .. automodule:: TextGame.GameState
    :members:
 
-TextGame GameObject
+GameObject
 ===================
 .. automodule:: TextGame.GameObject
    :members:
 
-TextGame Events
+Events
 ===================
 .. automodule:: TextGame.Events
    :members:
 
-TextGame ActorUnit
+ActorUnit
 ===================
 .. automodule:: TextGame.ActorUnit
    :members:
 
-TextGame Armor
+Player
+-------------------
+.. automodule:: TextGame.UnitTypes.Player
+   :members:
+
+Enemy
+-------------------
+.. automodule:: TextGame.UnitTypes.Enemy
+   :members:
+
+Merchant
+-------------------
+.. automodule:: TextGame.UnitTypes.Merchant
+   :members:
+
+Armor
 ===================
 .. automodule:: TextGame.Armor
    :members:
 
-TextGame Weapon
+Weapon
 ===================
 .. automodule:: TextGame.Weapon
    :members:
 
-TextGame Menu
+Menu
 ===================
 .. automodule:: TextGame.Menu
    :members:
 
-TextGame Inventory
+Inventory
 ===================
 .. automodule:: TextGame.Inventory
    :members:
 
-TextGame Shop
+Shop
 ===================
 .. automodule:: TextGame.Shop
    :members:

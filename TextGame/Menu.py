@@ -29,7 +29,7 @@ class Menu:
         index: int = 0
         banned_index: list = [0]
         for actor in GameState.actors:
-            if actor.hostility > 255:
+            if (actor is not GameState.player_actor) and actor.hostility > 255:
                 print(f'ID-{index:02} | {actor.name}: HP-{actor.health} Def-{actor.armor.defense}\n'
                       f'      | {" " * (len(actor.name) + 1)} AC-{actor.armor.AC} Res-{", ".join(actor.armor.resistances)}')
             else:

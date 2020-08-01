@@ -37,7 +37,7 @@
 </div>
 </div>
 <div class="section" id="module-TextGame.GameState">
-<span id="textgame-gamestate"></span><h1>TextGame GameState<a class="headerlink" href="#module-TextGame.GameState" title="Permalink to this headline">¶</a></h1>
+<span id="gamestate"></span><h1>GameState<a class="headerlink" href="#module-TextGame.GameState" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="TextGame.GameState.GameState">
 <em class="property">class </em><code class="sig-prename descclassname">TextGame.GameState.</code><code class="sig-name descname">GameState</code><a class="headerlink" href="#TextGame.GameState.GameState" title="Permalink to this definition">¶</a></dt>
@@ -72,7 +72,7 @@
 
 </div>
 <div class="section" id="module-TextGame.GameObject">
-<span id="textgame-gameobject"></span><h1>TextGame GameObject<a class="headerlink" href="#module-TextGame.GameObject" title="Permalink to this headline">¶</a></h1>
+<span id="gameobject"></span><h1>GameObject<a class="headerlink" href="#module-TextGame.GameObject" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="TextGame.GameObject.GameObject">
 <em class="property">class </em><code class="sig-prename descclassname">TextGame.GameObject.</code><code class="sig-name descname">GameObject</code><a class="headerlink" href="#TextGame.GameObject.GameObject" title="Permalink to this definition">¶</a></dt>
@@ -99,7 +99,7 @@
 
 </div>
 <div class="section" id="module-TextGame.Events">
-<span id="textgame-events"></span><h1>TextGame Events<a class="headerlink" href="#module-TextGame.Events" title="Permalink to this headline">¶</a></h1>
+<span id="events"></span><h1>Events<a class="headerlink" href="#module-TextGame.Events" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="TextGame.Events.Events">
 <em class="property">class </em><code class="sig-prename descclassname">TextGame.Events.</code><code class="sig-name descname">Events</code><a class="headerlink" href="#TextGame.Events.Events" title="Permalink to this definition">¶</a></dt>
@@ -130,22 +130,11 @@
 
 </div>
 <div class="section" id="module-TextGame.ActorUnit">
-<span id="textgame-actorunit"></span><h1>TextGame ActorUnit<a class="headerlink" href="#module-TextGame.ActorUnit" title="Permalink to this headline">¶</a></h1>
+<span id="actorunit"></span><h1>ActorUnit<a class="headerlink" href="#module-TextGame.ActorUnit" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="TextGame.ActorUnit.ActorUnit">
-<em class="property">class </em><code class="sig-prename descclassname">TextGame.ActorUnit.</code><code class="sig-name descname">ActorUnit</code><span class="sig-paren">(</span><em class="sig-param">name: str = 'default'</em>, <em class="sig-param">health: int = 1</em>, <em class="sig-param">starter_weapon: TextGame.Weapon.Weapon = Weapon(name:Fists</em>, <em class="sig-param">_dmg:1</em>, <em class="sig-param">durability_max: 999</em>, <em class="sig-param">_durability: 999</em>, <em class="sig-param">hit_mod: 0</em>, <em class="sig-param">dmg_type: Bludgeoning</em>, <em class="sig-param">is_ranged: False</em>, <em class="sig-param">tier: Common)</em>, <em class="sig-param">starter_armor: TextGame.Armor.Armor = Armor(name:Loincloth</em>, <em class="sig-param">durability_max:99999</em>, <em class="sig-param">_durability:99999</em>, <em class="sig-param">_resistances:[]</em>, <em class="sig-param">_defense:2</em>, <em class="sig-param">AC:5)</em>, <em class="sig-param">level: int = 0</em>, <em class="sig-param">experience: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.ActorUnit.ActorUnit" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">TextGame.ActorUnit.</code><code class="sig-name descname">ActorUnit</code><span class="sig-paren">(</span><em class="sig-param">name: str = 'default'</em>, <em class="sig-param">health: int = 1</em>, <em class="sig-param">starter_weapon: TextGame.Weapon.Weapon = Weapon(name:Fists</em>, <em class="sig-param">_dmg:1</em>, <em class="sig-param">durability_max: 999</em>, <em class="sig-param">_durability: 999</em>, <em class="sig-param">hit_mod: 0</em>, <em class="sig-param">dmg_type: Bludgeoning</em>, <em class="sig-param">is_ranged: False</em>, <em class="sig-param">tier: Common)</em>, <em class="sig-param">starter_armor: TextGame.Armor.Armor = Armor(name:Loincloth</em>, <em class="sig-param">durability_max:99999</em>, <em class="sig-param">_durability:99999</em>, <em class="sig-param">_resistances:[]</em>, <em class="sig-param">_defense:2</em>, <em class="sig-param">AC:5)</em><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.ActorUnit.ActorUnit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents any and all controllable and non-controllable entities.</p>
-<dl class="py method">
-<dt id="TextGame.ActorUnit.ActorUnit.heal">
-<code class="sig-name descname">heal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.ActorUnit.ActorUnit.heal" title="Permalink to this definition">¶</a></dt>
-<dd><p>Heal action of player.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt id="TextGame.ActorUnit.ActorUnit.health">
 <em class="property">property </em><code class="sig-name descname">health</code><a class="headerlink" href="#TextGame.ActorUnit.ActorUnit.health" title="Permalink to this definition">¶</a></dt>
@@ -153,17 +142,6 @@
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>_health property of ActorUnit instance.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="TextGame.ActorUnit.ActorUnit.repair">
-<code class="sig-name descname">repair</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.ActorUnit.ActorUnit.repair" title="Permalink to this definition">¶</a></dt>
-<dd><p>Repair player equipment.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -181,9 +159,65 @@
 
 </dd></dl>
 
+<div class="section" id="module-TextGame.UnitTypes.Player">
+<span id="player"></span><h2>Player<a class="headerlink" href="#module-TextGame.UnitTypes.Player" title="Permalink to this headline">¶</a></h2>
+<p>The player unit, extends ActorUnit.</p>
+<dl class="py attribute">
+<dt id="TextGame.UnitTypes.Player.health">
+<code class="sig-prename descclassname">TextGame.UnitTypes.Player.</code><code class="sig-name descname">health</code><a class="headerlink" href="#TextGame.UnitTypes.Player.health" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for _health.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>_health property of ActorUnit instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="TextGame.UnitTypes.Player.xp">
+<code class="sig-prename descclassname">TextGame.UnitTypes.Player.</code><code class="sig-name descname">xp</code><a class="headerlink" href="#TextGame.UnitTypes.Player.xp" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO: Bug - setter is broken; stops at lvl 3, 0/4 xp</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-TextGame.UnitTypes.Enemy">
+<span id="enemy"></span><h2>Enemy<a class="headerlink" href="#module-TextGame.UnitTypes.Enemy" title="Permalink to this headline">¶</a></h2>
+<p>Class for all enemy units, extends ActorUnit.</p>
+<dl class="py attribute">
+<dt id="TextGame.UnitTypes.Enemy.health">
+<code class="sig-prename descclassname">TextGame.UnitTypes.Enemy.</code><code class="sig-name descname">health</code><a class="headerlink" href="#TextGame.UnitTypes.Enemy.health" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for _health.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>_health property of ActorUnit instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-TextGame.UnitTypes.Merchant">
+<span id="merchant"></span><h2>Merchant<a class="headerlink" href="#module-TextGame.UnitTypes.Merchant" title="Permalink to this headline">¶</a></h2>
+<p>Shop/Merchant class, extends ActorUnit.</p>
+<dl class="py attribute">
+<dt id="TextGame.UnitTypes.Merchant.health">
+<code class="sig-prename descclassname">TextGame.UnitTypes.Merchant.</code><code class="sig-name descname">health</code><a class="headerlink" href="#TextGame.UnitTypes.Merchant.health" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for _health.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>_health property of ActorUnit instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 </div>
 <div class="section" id="module-TextGame.Armor">
-<span id="textgame-armor"></span><h1>TextGame Armor<a class="headerlink" href="#module-TextGame.Armor" title="Permalink to this headline">¶</a></h1>
+<span id="armor"></span><h1>Armor<a class="headerlink" href="#module-TextGame.Armor" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="TextGame.Armor.Armor">
 <em class="property">class </em><code class="sig-prename descclassname">TextGame.Armor.</code><code class="sig-name descname">Armor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">durability</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">99999</span></em>, <em class="sig-param"><span class="n">resistances</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">defense</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">armor_class</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">tier</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Common'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.Armor.Armor" title="Permalink to this definition">¶</a></dt>
@@ -222,7 +256,7 @@
 
 </div>
 <div class="section" id="module-TextGame.Weapon">
-<span id="textgame-weapon"></span><h1>TextGame Weapon<a class="headerlink" href="#module-TextGame.Weapon" title="Permalink to this headline">¶</a></h1>
+<span id="weapon"></span><h1>Weapon<a class="headerlink" href="#module-TextGame.Weapon" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="TextGame.Weapon.Weapon">
 <em class="property">class </em><code class="sig-prename descclassname">TextGame.Weapon.</code><code class="sig-name descname">Weapon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">damage</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">durability</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">999</span></em>, <em class="sig-param"><span class="n">hit_modifier</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">damage_type</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Bludgeoning'</span></em>, <em class="sig-param"><span class="n">is_ranged</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">tier</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Common'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.Weapon.Weapon" title="Permalink to this definition">¶</a></dt>
@@ -283,7 +317,7 @@
 
 </div>
 <div class="section" id="module-TextGame.Menu">
-<span id="textgame-menu"></span><h1>TextGame Menu<a class="headerlink" href="#module-TextGame.Menu" title="Permalink to this headline">¶</a></h1>
+<span id="menu"></span><h1>Menu<a class="headerlink" href="#module-TextGame.Menu" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="TextGame.Menu.Menu">
 <em class="property">class </em><code class="sig-prename descclassname">TextGame.Menu.</code><code class="sig-name descname">Menu</code><a class="headerlink" href="#TextGame.Menu.Menu" title="Permalink to this definition">¶</a></dt>
@@ -292,10 +326,10 @@
 
 </div>
 <div class="section" id="module-TextGame.Inventory">
-<span id="textgame-inventory"></span><h1>TextGame Inventory<a class="headerlink" href="#module-TextGame.Inventory" title="Permalink to this headline">¶</a></h1>
+<span id="inventory"></span><h1>Inventory<a class="headerlink" href="#module-TextGame.Inventory" title="Permalink to this headline">¶</a></h1>
 </div>
-<div class="section" id="textgame-shop">
-<h1>TextGame Shop<a class="headerlink" href="#textgame-shop" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="shop">
+<h1>Shop<a class="headerlink" href="#shop" title="Permalink to this headline">¶</a></h1>
 </div>
 
 

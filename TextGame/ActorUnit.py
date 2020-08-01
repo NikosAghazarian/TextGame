@@ -1,4 +1,5 @@
 import random as rand
+import math as math
 
 from TextGame.GameState import GameState
 from TextGame.Menu import Menu
@@ -19,9 +20,8 @@ class ActorUnit:
                  name: str = 'default',
                  health: int = 1,
                  starter_weapon: Weapon = Weapon('Fists'),
-                 starter_armor: Armor = Armor('Loincloth', defense=2, armor_class=5),
-                 level: int = 0,
-                 experience: int = 1):
+                 starter_armor: Armor = Armor('Loincloth', defense=2, armor_class=5)
+                 ):
 
         ActorUnit._instance_count += 1
 
@@ -32,13 +32,6 @@ class ActorUnit:
         self._health: float = health
         self.weapons: list = [starter_weapon]
         self.armor: Armor = starter_armor
-
-        self._xp: int = experience
-        self._lvl: int = level
-
-        # Hostility towards the player.
-        # 0-99:Friendly; 100-174:Neutral; 175-254:Disgruntled ; 255+:hostile
-
 
         self.inventory: Inventory = Inventory()
 
@@ -64,7 +57,7 @@ class ActorUnit:
         weapon: Weapon = self.weapon_selector()
 
         if weapon.is_ranged:
-            print('Try finger; ranged battle not implemented.')
+            print('Fah Losei Dovahkiin; ranged battle not implemented.')
         else:
             roll: int = rand.randint(1, 20)  # Chance to hit logic.
             if roll+weapon.hit_mod >= target.armor.AC:
@@ -91,98 +84,6 @@ class ActorUnit:
             armor_damage = 0
         self.armor_durability -= armor_damage
 
-    def target_selector(self) -> 'ActorUnit':
-        if not self.isPlayer:
-            return GameState.player_actor
-
-        banned_index = Menu.targeting()
-        chosen_index: int = -1
-        max_index: int = len(GameState.actors)-1
-        while chosen_index <= 0 or max_index < chosen_index or chosen_index in banned_index:
-            try:
-                chosen_index = int(input('Choose a valid target ID: '))
-            except ValueError:
-                print('Not a valid numeric ID.')
-        return GameState.actors[chosen_index]
-
-    def weapon_selector(self) -> Weapon:
-        chosen_index: int = -1
-
-        if self is not GameState.player_actor:  # AI
-            index: int = 0
-            dmg: float = 0
-            for weapon in self.weapons:
-                if weapon.dmg > dmg:  # AI always picks highest dmg weapon available.
-                    dmg = weapon.dmg
-                    chosen_index = index
-                index += 1
-        else:  # Player
-            Menu.player_weapons()
-            max_index: int = len(self.weapons)-1
-            while chosen_index < 0 or chosen_index > max_index:
-                try:
-                    chosen_index = int(input('Choose a valid weapon ID: '))
-                except ValueError:
-                    print('Not a valid numeric ID.')
-
-        return self.weapons[chosen_index]
-
-    def armor_selector(self) -> Armor:
-        armors: list = [GameState.player_actor.armor]
-        armors.extend([item for item in GameState.player_actor.inventory.storedItems if type(item) == 'Armor'])
-        Menu.player_armors(armors)
-        chosen_index: int = -1
-        max_index: int = len(armors)-1
-
-        while chosen_index < 0 or chosen_index > max_index:
-            try:
-                chosen_index = int(input('Choose a valid armor ID: '))
-            except ValueError:
-                print('Not a valid numeric ID.')
-
-        return armors[chosen_index]
-
-    def don_armor(self):
-        new_armor: Armor = self.armor_selector()
-        if new_armor.durability >= 1:  # Check if broken.
-            self.inventory.store(self.armor)  # Store current armor.
-            self.inventory.retrieve(new_armor)  # Take out new armor.
-            self.armor = new_armor  # Equip.
-        else:
-            print('This armor is too damaged to use.')
-
-    def heal(self):
-        """
-        Heal action of player.
-
-        :return:
-        """
-        self.health += 3
-
-    def repair(self):
-        """
-        Repair player equipment.
-
-        :return: None
-        """
-        command = ''
-        while command not in ['a', 'armor', 'w', 'weapon']:
-            command = input('Repair (A)rmor or (W)eapon: ').lower()
-
-        if command in ['a', 'armor']:
-            item: Armor = self.armor_selector()
-            item.durability += item.durability_max * 0.05
-        elif command in ['w', 'weapon']:
-            item: Weapon = self.weapon_selector()
-            self.modify_weapon_durability(item, item.durability_max * 0.05)
-        else:
-            raise ValueError('Not sure how you got here.')
-        print(f'{item.name}: {item.durability} / {item.durability_max}')
-
-    def shop(self):
-
-        Menu.shop()
-
     @property
     def armor_durability(self) -> float:
         return self.armor.durability
@@ -194,7 +95,7 @@ class ActorUnit:
             self.inventory.store(self.armor)  # Store current armor.
             self.armor = Armor('Loincloth', defense=2, armor_class=5)  # When armor breaks, equip loincloth
 
-    def modify_weapon_durability(self, weapon: Weapon, durability_delta: float):
+    def modify_weapon_durability(self, weapon: Weapon, durability_delta: float) -> None:
         if weapon in self.weapons:
             weapon.durability += durability_delta
             if weapon.durability < 1:
@@ -209,6 +110,7 @@ class ActorUnit:
 
         :return: _health property of ActorUnit instance.
         """
+
         return self._health
 
     @health.setter
@@ -225,10 +127,8 @@ class ActorUnit:
             ActorUnit._instance_count -= 1
             if self is not GameState.player_actor:
                 GameState.actors.remove(self)
-                if self.hostility > 254:
-                    GameState.player_actor._xp += self._xp  # CHANGE THIS AFTER ADDING LEVELING
-                    GameState.enemy_count -= 1
-
+                GameState.player_actor.xp += math.ceil(0.13*self.health_max)  # CHANGE THIS AFTER ADDING LEVELING
+                GameState.enemy_count -= 1
             else:
                 print("You have died...")
 
@@ -262,8 +162,5 @@ class ActorUnit:
             f'_health:{self._health}, '
             f'weapons:{repr(self.weapons)}, '
             f'armor:{repr(self.armor)}, '
-            f'_xp:{self._xp}, '
-            f'_lvl:{self._lvl}, '
-            f'hostility:{self.hostility}, '
             f'inventory:{self.inventory})'
         )
