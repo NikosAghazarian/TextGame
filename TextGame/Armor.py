@@ -2,9 +2,10 @@ import math as math
 import random as rand
 
 from TextGame.GameState import GameState
+from TextGame.Item import Item
 
 
-class Armor:
+class Armor(Item):
     """
     Armor item class.
     """
@@ -24,7 +25,8 @@ class Armor:
 
         Armor._instance_count += 1
 
-        self.name: str = name
+        super().__init__(name)
+
         self.durability_max: int = durability
         self._durability: float = durability
         self._resistances: list = resistances
@@ -47,7 +49,11 @@ class Armor:
         res: str = None
         defense: int = int(math.ceil(0.6 * pow(math.log10(1 + scaling**2), 2.45)))
         ac: int = int(math.floor(scaling * 0.08))
-        return Armor('CommonArmor', dur, res, defense, ac, 'Common')
+
+        armor: Armor = Armor('CommonArmor', dur, res, defense, ac, 'Common')
+        armor.value = 150
+        armor.weight = 30
+        return armor
 
     @staticmethod
     def create_uncommon_armor(scaling: int):
@@ -55,7 +61,11 @@ class Armor:
         res: str = None
         defense: int = int(math.ceil(0.7 * pow(math.log10(1 + scaling ** 2), 2.45)))
         ac: int = int(math.floor(scaling * 0.1)) + 1
-        return Armor('UncommonArmor', dur, res, defense, ac, 'Uncommon')
+
+        armor: Armor = Armor('UncommonArmor', dur, res, defense, ac, 'Uncommon')
+        armor.value = 400
+        armor.weight = 25
+        return armor
 
     @staticmethod
     def create_rare_armor(scaling: int):
@@ -63,7 +73,11 @@ class Armor:
         res: list = [GameState.damage_types[rand.randrange(0, 4)]]  # Picks a random normal resistance
         defense: int = int(math.ceil(0.8 * pow(math.log10(1 + scaling ** 2), 2.45)))
         ac: int = int(math.floor(scaling * 0.1)) + 2
-        return Armor('RareArmor', dur, res, defense, ac, 'Rare')
+
+        armor: Armor = Armor('RareArmor', dur, res, defense, ac, 'Rare')
+        armor.value = 750
+        armor.weight = 20
+        return armor
 
     @staticmethod
     def create_legendary_armor(scaling: int):
@@ -71,7 +85,11 @@ class Armor:
         res: list = rand.sample(GameState.damage_types, 1)  # Picks 1-3 random resistances
         defense: int = int(math.ceil(0.9 * pow(math.log10(1 + scaling ** 2), 2.45)))
         ac: int = int(math.floor(scaling * 0.1)) + 3
-        return Armor('LegendaryArmor', dur, res, defense, ac, 'Legendary')
+
+        armor: Armor = Armor('LegendaryArmor', dur, res, defense, ac, 'Legendary')
+        armor.value = 1250
+        armor.weight = 40
+        return armor
 
     @staticmethod
     def create_mythic_armor(scaling: int):
@@ -79,7 +97,11 @@ class Armor:
         res: list = rand.sample(GameState.damage_types, 3)  # Picks 3 random resistances
         defense: int = int(math.ceil(0.6 * pow(math.log10(1 + scaling ** 2), 2.35)))
         ac: int = int(math.floor(scaling * 0.1)) + 9
-        return Armor('MythicArmor', dur, res, defense, ac, 'Mythic')
+
+        armor: Armor = Armor('MythicArmor', dur, res, defense, ac, 'Mythic')
+        armor.value = 2000
+        armor.weight = 5
+        return armor
 
     @staticmethod
     def armor_gen(scaling: int) -> 'Armor':
@@ -133,7 +155,6 @@ class Armor:
     def durability(self, new_durability: float):
         self._durability = new_durability
         if self._durability < 1:
-            print(f'{self.name} has broken!')
             self._durability = 0
         elif self._durability > self.durability_max:
             self._durability = self.durability_max

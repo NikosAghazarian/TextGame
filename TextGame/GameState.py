@@ -16,8 +16,8 @@ class GameState:
     equip_tiers: list = ['Common', 'Uncommon', 'Rare', 'Legendary', 'Mythic']
     actors: list = []
     round_count: int = 0
-    player_actor: 'ActorUnit' = None  # Is effectively const after assignment. Reassigned only on reset.
+    player_actor: 'ActorUnit' = None
+    merchant_actor: 'ActorUnit' = None
     is_active_game: bool = True
     nonfree_action_taken: bool = False
     enemy_count: int = 0
-    merchant: 'Shop' = None

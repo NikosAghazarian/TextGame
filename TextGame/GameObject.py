@@ -1,6 +1,5 @@
 from TextGame.GameState import GameState
 from TextGame.Events import Events
-from TextGame.ActorUnit import ActorUnit
 from TextGame.Weapon import Weapon
 from TextGame.UnitTypes import Player
 

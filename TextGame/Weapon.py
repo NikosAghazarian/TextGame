@@ -2,9 +2,10 @@ import math as math
 import random as rand
 
 from TextGame.GameState import GameState
+from TextGame.Item import Item
 
 
-class Weapon:
+class Weapon(Item):
     """
     Class for weapon items.
     """
@@ -22,7 +23,8 @@ class Weapon:
 
         Weapon._instance_count += 1
 
-        self.name: str = name
+        super().__init__(name)
+
         self._dmg: float = damage
         self.durability_max: int = durability
         self._durability: float = durability
@@ -48,7 +50,10 @@ class Weapon:
         dmg_type: str = GameState.damage_types[rand.randrange(0, 4)]  # Random normal dmg type.
         ranged: bool = True if rand.random() > 0.95 else False  # 5% chance for ranged battle.
 
-        return Weapon('CommonWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Common')
+        weap: Weapon = Weapon('CommonWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Common')
+        weap.value = 100
+        weap.weight = 15
+        return weap
 
     @staticmethod
     def create_uncommon_weapon(scaling: int) -> 'Weapon':
@@ -58,7 +63,10 @@ class Weapon:
         dmg_type: str = GameState.damage_types[rand.randrange(0, 4)]  # Random normal dmg type.
         ranged: bool = True if rand.random() > 0.9 else False  # 10% chance for ranged battle.
 
-        return Weapon('UncommonWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Uncommon')
+        weap: Weapon = Weapon('UncommonWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Uncommon')
+        weap.value = 250
+        weap.weight = 15
+        return weap
 
     @staticmethod
     def create_rare_weapon(scaling: int) -> 'Weapon':
@@ -68,7 +76,10 @@ class Weapon:
         dmg_type: str = GameState.damage_types[rand.randrange(0, len(GameState.damage_types))]  # Random dmg type.
         ranged: bool = True if rand.random() > 0.85 else False  # 15 chance for ranged battle.
 
-        return Weapon('RareWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Rare')
+        weap: Weapon = Weapon('RareWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Rare')
+        weap.value = 500
+        weap.weight = 10
+        return weap
 
     @staticmethod
     def create_legendary_weapon(scaling: int) -> 'Weapon':
@@ -78,7 +89,10 @@ class Weapon:
         dmg_type: str = GameState.damage_types[rand.randrange(0, len(GameState.damage_types))]  # Random dmg type.
         ranged: bool = True if rand.random() > 0.85 else False  # 15 chance for ranged battle.
 
-        return Weapon('LegendaryWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Legendary')
+        weap: Weapon = Weapon('LegendaryWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Legendary')
+        weap.value = 1000
+        weap.weight = 20
+        return weap
 
     @staticmethod
     def create_mythic_weapon(scaling: int) -> 'Weapon':
@@ -88,7 +102,10 @@ class Weapon:
         dmg_type: str = GameState.damage_types[rand.randrange(0, len(GameState.damage_types))]  # Random dmg type.
         ranged: bool = True if rand.random() > 0.85 else False  # 15 chance for ranged battle.
 
-        return Weapon('MythicWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Mythic')
+        weap: Weapon = Weapon('MythicWeapon', atk, dur, hit_mod, dmg_type, ranged, 'Mythic')
+        weap.value = 1000
+        weap.weight = 5
+        return weap
 
     @staticmethod
     def weapon_gen(scaling: int) -> 'Weapon':

@@ -44,7 +44,7 @@ class ActorUnit:
         """
         return ActorUnit._instance_count
 
-    def turn(self):
+    def turn(self) -> None:
         if self.isPlayer:
             Menu.menu_logic()
         else:  # actions to occur on every enemy turn
@@ -52,7 +52,7 @@ class ActorUnit:
 
                 self.attack()
 
-    def attack(self):
+    def attack(self) -> None:
         target: ActorUnit = self.target_selector()  # Player
         weapon: Weapon = self.weapon_selector()
 
@@ -68,7 +68,7 @@ class ActorUnit:
             else:
                 print(f'{self.name} missed!')
 
-    def take_damage(self, damage: float, damage_type: str):
+    def take_damage(self, damage: float, damage_type: str) -> None:
         effective_dmg: float = damage
         if damage_type in self.armor.resistances:
             effective_dmg *= 0.66  # Resistance grants 33% dmg reduction.
@@ -76,22 +76,23 @@ class ActorUnit:
         if effective_dmg < 1:  # Minimum 1 damage on hit
             effective_dmg = 1
 
-        print(f'{effective_dmg} {damage_type.lower()} damage.')
-        self.health -= effective_dmg
+        print(f'{effective_dmg} {damage_type.lower()} damage.')  # Second half of attack statement.
 
         armor_damage: float = effective_dmg - self.armor.defense
         if armor_damage < 0:  # EffDmg. - 2 * defense durability reduction.
             armor_damage = 0
         self.armor_durability -= armor_damage
+        self.health -= effective_dmg
 
     @property
     def armor_durability(self) -> float:
         return self.armor.durability
 
     @armor_durability.setter
-    def armor_durability(self, new_durability: float):
+    def armor_durability(self, new_durability: float) -> None:
         self.armor.durability = new_durability
         if self.armor.durability < 1:
+            print(f"{self.name}'s {self.armor.name} has broken!")
             self.inventory.store(self.armor)  # Store current armor.
             self.armor = Armor('Loincloth', defense=2, armor_class=5)  # When armor breaks, equip loincloth
 
@@ -114,7 +115,7 @@ class ActorUnit:
         return self._health
 
     @health.setter
-    def health(self, new_health: int):
+    def health(self, new_health: int) -> None:
         """
         Setter for _health.
 

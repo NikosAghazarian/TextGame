@@ -118,10 +118,6 @@ class Player(ActorUnit):
             raise ValueError('Not sure how you got here.')
         print(f'{item.name}: {item.durability} / {item.durability_max}')
 
-    def shop(self) -> None:
-
-        Menu.shop()
-
     @property
     def xp(self) -> int:
         return self._xp
@@ -260,6 +256,7 @@ class Merchant(ActorUnit):
 
     def __init__(self):
         super().__init__('Merchant')
-        x: int = GameState.player_actor.lvl
+        scaling: int = GameState.player_actor.lvl
         self.inventory: Inventory = Inventory()
-        self.inventory.gold = rand.randrange(10+x*5, 80+x*15)
+        self.inventory.gold = rand.randrange(10 + scaling * 5, 80 + scaling * 15)
+

@@ -57,7 +57,8 @@ class Menu:
 
     @staticmethod
     def shop():
-        pass
+        index: int = 0
+        for item in GameState.merchant_actor.inventory
 
     class Actions:
 
@@ -85,10 +86,6 @@ class Menu:
         def heal():
             GameState.player_actor.heal()
 
-        @staticmethod
-        def shop():
-            GameState.player_actor.shop()
-
         combat_actions: dict = {
             'help': lambda: Menu.Actions.menu_help(),
             'h': lambda: Menu.Actions.menu_help(),
@@ -106,8 +103,8 @@ class Menu:
             'h': lambda: Menu.Actions.menu_help(),
             'status': lambda: Menu.Actions.status(),
             's': lambda: Menu.Actions.status(),
-            'shop': lambda: (),
-            'p': lambda: (),
+            'shop': lambda: Menu.shop(),
+            'p': lambda: Menu.shop(),
             'repair': lambda: Menu.Actions.repair(),
             'r': lambda: Menu.Actions.repair(),
             'hunt enemy': lambda: 0,  # Menu.Actions.hunt_enemy(),

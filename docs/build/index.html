@@ -71,138 +71,22 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-TextGame.GameObject">
-<span id="gameobject"></span><h1>GameObject<a class="headerlink" href="#module-TextGame.GameObject" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="TextGame.GameObject.GameObject">
-<em class="property">class </em><code class="sig-prename descclassname">TextGame.GameObject.</code><code class="sig-name descname">GameObject</code><a class="headerlink" href="#TextGame.GameObject.GameObject" title="Permalink to this definition">¶</a></dt>
-<dd><p>Namespace class that manages game-global methods.</p>
-<dl class="py method">
-<dt id="TextGame.GameObject.GameObject.reset">
-<em class="property">static </em><code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#TextGame.GameObject.GameObject.reset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for GameObject.start_game().</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="TextGame.GameObject.GameObject.round">
-<em class="property">static </em><code class="sig-name descname">round</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#TextGame.GameObject.GameObject.round" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes turns sequentially for each actor.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="TextGame.GameObject.GameObject.start_game">
-<em class="property">static </em><code class="sig-name descname">start_game</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#TextGame.GameObject.GameObject.start_game" title="Permalink to this definition">¶</a></dt>
-<dd><p>Static method for initializing the game state.</p>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="gameobject">
+<h1>GameObject<a class="headerlink" href="#gameobject" title="Permalink to this headline">¶</a></h1>
 </div>
-<div class="section" id="module-TextGame.Events">
-<span id="events"></span><h1>Events<a class="headerlink" href="#module-TextGame.Events" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="TextGame.Events.Events">
-<em class="property">class </em><code class="sig-prename descclassname">TextGame.Events.</code><code class="sig-name descname">Events</code><a class="headerlink" href="#TextGame.Events.Events" title="Permalink to this definition">¶</a></dt>
-<dd><p>Container class for game events. Used for namespace cleanliness.</p>
-<dl class="py method">
-<dt id="TextGame.Events.Events.generate_enemy">
-<em class="property">static </em><code class="sig-name descname">generate_enemy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">is_boss</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#TextGame.Events.Events.generate_enemy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates an enemy actor with stats scaled with GameObject.turn_count.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>is_boss</strong> – Controls whether to spawn a standard mob or a boss mob.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="TextGame.Events.Events.random_event">
-<em class="property">static </em><code class="sig-name descname">random_event</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#TextGame.Events.Events.random_event" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rolls for a random game event.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>True if event occurs, otherwise returns False.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="events">
+<h1>Events<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h1>
 </div>
-<div class="section" id="module-TextGame.ActorUnit">
-<span id="actorunit"></span><h1>ActorUnit<a class="headerlink" href="#module-TextGame.ActorUnit" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="TextGame.ActorUnit.ActorUnit">
-<em class="property">class </em><code class="sig-prename descclassname">TextGame.ActorUnit.</code><code class="sig-name descname">ActorUnit</code><span class="sig-paren">(</span><em class="sig-param">name: str = 'default'</em>, <em class="sig-param">health: int = 1</em>, <em class="sig-param">starter_weapon: TextGame.Weapon.Weapon = Weapon(name:Fists</em>, <em class="sig-param">_dmg:1</em>, <em class="sig-param">durability_max: 999</em>, <em class="sig-param">_durability: 999</em>, <em class="sig-param">hit_mod: 0</em>, <em class="sig-param">dmg_type: Bludgeoning</em>, <em class="sig-param">is_ranged: False</em>, <em class="sig-param">tier: Common)</em>, <em class="sig-param">starter_armor: TextGame.Armor.Armor = Armor(name:Loincloth</em>, <em class="sig-param">durability_max:99999</em>, <em class="sig-param">_durability:99999</em>, <em class="sig-param">_resistances:[]</em>, <em class="sig-param">_defense:2</em>, <em class="sig-param">AC:5)</em><span class="sig-paren">)</span><a class="headerlink" href="#TextGame.ActorUnit.ActorUnit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents any and all controllable and non-controllable entities.</p>
-<dl class="py method">
-<dt id="TextGame.ActorUnit.ActorUnit.health">
-<em class="property">property </em><code class="sig-name descname">health</code><a class="headerlink" href="#TextGame.ActorUnit.ActorUnit.health" title="Permalink to this definition">¶</a></dt>
-<dd><p>Getter for _health.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>_health property of ActorUnit instance.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="TextGame.ActorUnit.ActorUnit.unit_count">
-<em class="property">static </em><code class="sig-name descname">unit_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#TextGame.ActorUnit.ActorUnit.unit_count" title="Permalink to this definition">¶</a></dt>
-<dd><p>Getter for the amount of ActorUnit instances alive.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Unit count stored in class (not per-instance).</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<div class="section" id="module-TextGame.UnitTypes.Player">
-<span id="player"></span><h2>Player<a class="headerlink" href="#module-TextGame.UnitTypes.Player" title="Permalink to this headline">¶</a></h2>
-<p>The player unit, extends ActorUnit.</p>
-<dl class="py attribute">
-<dt id="TextGame.UnitTypes.Player.health">
-<code class="sig-prename descclassname">TextGame.UnitTypes.Player.</code><code class="sig-name descname">health</code><a class="headerlink" href="#TextGame.UnitTypes.Player.health" title="Permalink to this definition">¶</a></dt>
-<dd><p>Getter for _health.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>_health property of ActorUnit instance.</p>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="section" id="actorunit">
+<h1>ActorUnit<a class="headerlink" href="#actorunit" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="player">
+<h2>Player<a class="headerlink" href="#player" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-TextGame.UnitTypes.Enemy">
-<span id="enemy"></span><h2>Enemy<a class="headerlink" href="#module-TextGame.UnitTypes.Enemy" title="Permalink to this headline">¶</a></h2>
-<p>Class for all enemy units, extends ActorUnit.</p>
-<dl class="py attribute">
-<dt id="TextGame.UnitTypes.Enemy.health">
-<code class="sig-prename descclassname">TextGame.UnitTypes.Enemy.</code><code class="sig-name descname">health</code><a class="headerlink" href="#TextGame.UnitTypes.Enemy.health" title="Permalink to this definition">¶</a></dt>
-<dd><p>Getter for _health.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>_health property of ActorUnit instance.</p>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="section" id="enemy">
+<h2>Enemy<a class="headerlink" href="#enemy" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-TextGame.UnitTypes.Merchant">
-<span id="merchant"></span><h2>Merchant<a class="headerlink" href="#module-TextGame.UnitTypes.Merchant" title="Permalink to this headline">¶</a></h2>
-<p>Shop/Merchant class, extends ActorUnit.</p>
-<dl class="py attribute">
-<dt id="TextGame.UnitTypes.Merchant.health">
-<code class="sig-prename descclassname">TextGame.UnitTypes.Merchant.</code><code class="sig-name descname">health</code><a class="headerlink" href="#TextGame.UnitTypes.Merchant.health" title="Permalink to this definition">¶</a></dt>
-<dd><p>Getter for _health.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>_health property of ActorUnit instance.</p>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="section" id="merchant">
+<h2>Merchant<a class="headerlink" href="#merchant" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 <div class="section" id="module-TextGame.Armor">
@@ -305,14 +189,8 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-TextGame.Menu">
-<span id="menu"></span><h1>Menu<a class="headerlink" href="#module-TextGame.Menu" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="TextGame.Menu.Menu">
-<em class="property">class </em><code class="sig-prename descclassname">TextGame.Menu.</code><code class="sig-name descname">Menu</code><a class="headerlink" href="#TextGame.Menu.Menu" title="Permalink to this definition">¶</a></dt>
-<dd><p>Namespace class</p>
-</dd></dl>
-
+<div class="section" id="menu">
+<h1>Menu<a class="headerlink" href="#menu" title="Permalink to this headline">¶</a></h1>
 </div>
 <div class="section" id="module-TextGame.Inventory">
 <span id="inventory"></span><h1>Inventory<a class="headerlink" href="#module-TextGame.Inventory" title="Permalink to this headline">¶</a></h1>
