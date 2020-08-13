@@ -4,7 +4,7 @@ class GameState:
 
     :damage_types: ``List[str]`` - Types of damage available for weapon damage and armor resistance.
     :actors: ``List[ActorUnit]`` - List of active entities in the game.
-    :turn_count: ``int`` - Combat turns taken. TODO: Replace with level scaling instead.
+    :round_count: ``int`` - Combat turns taken.
     :player_actor: ``ActorUnit`` - Reference to the ``ActorUnit`` representing the player.
     :is_active_game: ``bool`` - Flag variable. Determined at start of turn cycle if player HP==0.
     :nonfree_action_taken: ``Bool`` - Flag variable. Used to determine whether hostile entities get to act.

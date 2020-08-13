@@ -19,7 +19,7 @@ class Events:
         :param is_boss: Controls whether to spawn a standard mob or a boss mob.
         """
 
-        scaling: int = GameState.round_count  # Scaling variable.
+        scaling: int = GameState.player_actor.lvl  # Scaling variable.
         if is_boss:
             # Boss Stat Block
             scaling += scaling * 0.1
@@ -65,7 +65,7 @@ class Events:
             Events.generate_enemy()
             return True
         elif roll < 65:
-            if GameState.round_count > 30:
+            if GameState.player_actor.lvl > 15:
                 Events.generate_enemy(is_boss=True)
                 return True
             return False

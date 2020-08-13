@@ -30,6 +30,7 @@ class GameObject:
         GameState.player_actor.weapons.append(Weapon('Fists'))
         GameState.player_actor.isPlayer = True
         GameState.actors.append(GameState.player_actor)
+        print(GameState.player_actor)
 
         Events.generate_enemy()
 

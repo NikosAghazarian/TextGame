@@ -124,23 +124,17 @@ class Player(ActorUnit):
 
     @property
     def xp(self) -> int:
-        """
-        TODO: Bug - setter is broken; stops at lvl 3, 0/4 xp
-
-        :return:
-        """
         return self._xp
 
     @xp.setter
     def xp(self, new_xp: int) -> None:
         if new_xp >= self.next_level_xp_threshold:
-            self.lvl += 1
             remaining_xp = new_xp - self.next_level_xp_threshold + self.xp
-            self.xp = 0
-            self.next_level_xp_threshold += self.next_level_xp_threshold
+            self.lvl += 1
             self.xp += remaining_xp
+            self.health += self.health_max
         else:
-            _xp = new_xp
+            self._xp = new_xp
 
     @property
     def lvl(self) -> int:
@@ -149,6 +143,9 @@ class Player(ActorUnit):
     @lvl.setter
     def lvl(self, new_lvl: int) -> None:
         print("Level Up!")
+        self.health_max += int(2 + self.lvl * 2 + 0.02 * (self.lvl**2))
+        self.xp = 0
+        self.next_level_xp_threshold += self.next_level_xp_threshold
         self._lvl = new_lvl
 
     def __str__(self) -> str:
@@ -263,6 +260,6 @@ class Merchant(ActorUnit):
 
     def __init__(self):
         super().__init__('Merchant')
-        x: int = GameState.round_count
+        x: int = GameState.player_actor.lvl
         self.inventory: Inventory = Inventory()
         self.inventory.gold = rand.randrange(10+x*5, 80+x*15)
