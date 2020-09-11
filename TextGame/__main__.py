@@ -16,17 +16,17 @@ from TextGame.GameObject import GameObject
 
 rand.seed()
 
-GameObject.start_game()
 
-while True:
-    GameObject.round()
-    if not GameState.is_active_game:
-        user_continue = input("Continue? [Y/n]").lower()
-        if user_continue == "y":
-            GameObject.reset()
-        elif user_continue == "n":
-            break
-        else:
-            continue
+def run_game() -> None:
+    GameObject.start_game()
+    while GameState.is_active_game:
+        GameObject.round()
+
+
+user_continue = "y"
+while user_continue == "y":
+    run_game()
+    user_continue = input("Continue? [Y/n]").lower()
+
 
 

@@ -25,9 +25,9 @@ class Events:
             scaling += scaling * 0.1
             hp: int = int(15 + scaling * 0.5 + 0.02 * scaling ** 2)  # Quadratic
 
-            weapon: Weapon = Weapon.weapon_gen(scaling)
+            weapon: Weapon = Weapon.gen_weapon(scaling)
             default_weapon: Weapon = Weapon('Fists', 5, hit_modifier=2)
-            armor: Armor = Armor.armor_gen(scaling)
+            armor: Armor = Armor.gen_armor(scaling)
 
             boss: Enemy = Enemy('Mantissa the Lightly-chilled', hp, weapon, armor)
             boss.weapons.append(default_weapon)
@@ -40,9 +40,9 @@ class Events:
             max_hp: int = int(11+(scaling**2)*0.02)
             hp: int = rand.randint(min_hp, max_hp)
 
-            weapon: Weapon = Weapon.weapon_gen(scaling)
+            weapon: Weapon = Weapon.gen_weapon(scaling)
             default_weapon: Weapon = Weapon('Fists')
-            armor: Armor = Armor.armor_gen(scaling)
+            armor: Armor = Armor.gen_armor(scaling)
 
             mob: Enemy = Enemy('Goblin', hp, weapon, armor)
             mob.weapons.append(default_weapon)

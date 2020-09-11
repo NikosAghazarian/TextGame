@@ -1,7 +1,10 @@
 from TextGame.GameState import GameState
 from TextGame.Events import Events
 from TextGame.Weapon import Weapon
+from TextGame.Armor import Armor
 from TextGame.UnitTypes import Player
+from TextGame.Inventory import Inventory
+from TextGame.Item import Item
 
 
 class GameObject:
@@ -15,7 +18,6 @@ class GameObject:
         Static method for initializing the game state.
         """
 
-        player_name = input('What is your name? ')
         GameState.round_count = 0
         GameState.actors = []
         GameState.is_active_game = True
@@ -24,12 +26,25 @@ class GameObject:
         GameState.merchant_present = False
 
         # Player Init.
-        weapon: Weapon = Weapon('Sword-like Catfish', 200, 999, 1, damage_type='Slicing')
-        GameState.player_actor = Player(name=player_name, health=2**20, starter_weapon=weapon)
+        player_name = input('What is your name? ')
+        starter_weapon: Weapon = Weapon('Sword-like Catfish', 200, 999, 1, damage_type='Slicing')
+        GameState.player_actor = Player(player_name, 2**20, starter_weapon)
         GameState.player_actor.weapons.append(Weapon('Fists'))
         GameState.player_actor.isPlayer = True
+        GameState.player_actor.inventory.gold = 10000
+        for i in range(3):  # Start with 3 health pots
+            GameState.player_actor.inventory.store(Item.gen_health_potion())
         GameState.actors.append(GameState.player_actor)
         print(GameState.player_actor)
+
+        # Shop Init
+        shop = Inventory()
+        shop.gold = 200
+        for i in range(3):  # Start with 3 health pots, weapons, and armors
+            shop.store(Item.gen_health_potion())
+            shop.store(Weapon.gen_weapon(1))
+            shop.store(Armor.gen_armor(1))
+        GameState.shop_inventory = shop
 
         Events.generate_enemy()
 
@@ -54,10 +69,3 @@ class GameObject:
             Events.random_event()
 
         GameState.nonfree_action_taken = False
-
-    @staticmethod
-    def reset() -> None:
-        """
-        Alias for GameObject.start_game().
-        """
-        GameObject.start_game()

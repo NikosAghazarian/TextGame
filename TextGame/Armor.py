@@ -45,6 +45,7 @@ class Armor(Item):
 
     @staticmethod
     def create_common_armor(scaling: int):
+        """ """
         dur: int = int(30 + 0.00002 * scaling ** 3)  # Cubic, but very slow start.
         res: str = None
         defense: int = int(math.ceil(0.6 * pow(math.log10(1 + scaling**2), 2.45)))
@@ -57,6 +58,7 @@ class Armor(Item):
 
     @staticmethod
     def create_uncommon_armor(scaling: int):
+        """ """
         dur: int = int(35 + 0.00002 * scaling ** 3)  # Cubic, but very slow start.
         res: str = None
         defense: int = int(math.ceil(0.7 * pow(math.log10(1 + scaling ** 2), 2.45)))
@@ -69,6 +71,7 @@ class Armor(Item):
 
     @staticmethod
     def create_rare_armor(scaling: int):
+        """ """
         dur: int = int(50 + 0.00003 * scaling ** 3)  # Cubic, but very slow start.
         res: list = [GameState.damage_types[rand.randrange(0, 4)]]  # Picks a random normal resistance
         defense: int = int(math.ceil(0.8 * pow(math.log10(1 + scaling ** 2), 2.45)))
@@ -81,6 +84,7 @@ class Armor(Item):
 
     @staticmethod
     def create_legendary_armor(scaling: int):
+        """ """
         dur: int = int(200 + 0.00003 * scaling ** 3)  # Cubic, but very slow start.
         res: list = rand.sample(GameState.damage_types, 1)  # Picks 1-3 random resistances
         defense: int = int(math.ceil(0.9 * pow(math.log10(1 + scaling ** 2), 2.45)))
@@ -93,6 +97,7 @@ class Armor(Item):
 
     @staticmethod
     def create_mythic_armor(scaling: int):
+        """ """
         dur: int = int(2 + 0.0003 * scaling ** 2)  # Quadratic, but very slow start.
         res: list = rand.sample(GameState.damage_types, 3)  # Picks 3 random resistances
         defense: int = int(math.ceil(0.6 * pow(math.log10(1 + scaling ** 2), 2.35)))
@@ -104,7 +109,7 @@ class Armor(Item):
         return armor
 
     @staticmethod
-    def armor_gen(scaling: int) -> 'Armor':
+    def gen_armor(scaling: int) -> 'Armor':
         """
         Generates armor with random tiers and stats.
 
@@ -149,6 +154,7 @@ class Armor(Item):
 
     @property
     def durability(self):
+        """ """
         return self._durability
 
     @durability.setter
@@ -162,6 +168,7 @@ class Armor(Item):
 
     @property
     def defense(self):
+        """ """
         if self.durability < 1:
             return 0
         return self._defense
@@ -172,6 +179,7 @@ class Armor(Item):
 
     @property
     def resistances(self):
+        """ """
         if self.durability < 1:
             return []
         return self._resistances
@@ -181,6 +189,7 @@ class Armor(Item):
         self._resistances = new_resistances
 
     def add_resistance(self, new_resistance: str):
+        """ """
         if new_resistance in GameState.damage_types:
             self._resistances.append(new_resistance)
         else:
@@ -188,15 +197,17 @@ class Armor(Item):
 
     def __str__(self):
         x: str = (f'  {self.name}  \n'
-                  f'++{"+"*len(self.name)}++\n'
+                  #f'++{"+"*len(self.name)}++\n'
                   f'Durability:  {self.durability} / {self.durability_max}\n'
                   f'Resistances: {", ".join(self.resistances)}\n'
                   f'Defense:     {self.defense}\n'
                   f'AC:          {self.AC}\n'
-                  f'++{"+" * len(self.name)}++\n')
+                  f'Value:       {self.value}\n'
+                  f'Weight:      {self.weight}\n'
+                  f'--------------\n')
         return x
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         return (
             f'Armor(name:{self.name}, '
             f'durability_max:{self.durability_max}, '

@@ -1,4 +1,5 @@
 from TextGame.GameState import GameState
+from TextGame.Weapon import Weapon
 
 
 class Menu:
@@ -7,7 +8,8 @@ class Menu:
     """
 
     @staticmethod
-    def menu_logic():
+    def menu_logic() -> None:
+        """ """
         while True:
             user_command = input('Give your command: ').lower()
 
@@ -26,6 +28,7 @@ class Menu:
 
     @staticmethod
     def targeting() -> int:
+        """ """
         index: int = 0
         banned_index: list = [0]
         for actor in GameState.actors:
@@ -38,7 +41,8 @@ class Menu:
         return banned_index
 
     @staticmethod
-    def player_weapons():
+    def player_weapons() -> None:
+        """ """
         index: int = 0
         for weapon in GameState.player_actor.weapons:
             print(f'ID-{index:02} | {weapon.name}: Dmg-{weapon.dmg} Type-{weapon.dmg_type}\n'
@@ -47,7 +51,8 @@ class Menu:
             index += 1
 
     @staticmethod
-    def player_armors(armors: list):
+    def player_armors(armors: list) -> None:
+        """ """
         index: int = 0
         for armor in armors:
             print(f'ID-{index:02} | {armor.name}: Def-{armor.defense} AC-{armor.AC}\n'
@@ -56,35 +61,60 @@ class Menu:
             index += 1
 
     @staticmethod
-    def shop():
+    def shop() -> None:
+        """ """
         index: int = 0
-        for item in GameState.merchant_actor.inventory
+        for item in GameState.shop_inventory:
+            print(f'###########\n#   {index:03d}   #\n###########\n{item}')
+            index += 1
+
+    @staticmethod
+    def buy() -> None:
+        Menu.shop()
+        choice_idx = int(input(f'Which item do you want to buy? [0 - {len(GameState.shop_inventory)-1}]'))
+        if 0 <= choice_idx < len(GameState.shop_inventory):
+            chosen_item = GameState.shop_inventory.stored_items[choice_idx]
+            try:
+                GameState.player_actor.inventory.gold -= chosen_item.value
+                if isinstance(chosen_item, Weapon):
+                    GameState.player_actor.weapons.append(chosen_item)
+                else:
+                    GameState.player_actor.inventory.store(chosen_item)
+                GameState.shop_inventory.remove_item(chosen_item.name)
+            except ValueError:
+                print('Not enough gold!')
 
     class Actions:
+        """ """
 
         @staticmethod
-        def menu_help():
-            print('Help: (h)elp, (s)tatus, sho(p), (r)epair, hunt (e)nemy, hea(l), pass(z)')
+        def menu_help() -> None:
+            """ """
+            print('Help: (h)elp, (s)tatus, sho(p), (r)epair, hea(l), pass(z)')
 
         @staticmethod
-        def status():
+        def status() -> None:
+            """ """
             print(GameState.player_actor)
 
         @staticmethod
-        def attack():
+        def attack() -> None:
+            """ """
             GameState.player_actor.attack()
 
-        # @staticmethod
-        # def hunt_enemy():  # Mega broken bc Circular dependency
-            # Events.generate_enemy()
-
         @staticmethod
-        def repair():
+        def repair() -> None:
+            """ """
             GameState.player_actor.repair()
 
         @staticmethod
-        def heal():
+        def heal() -> None:
+            """ """
             GameState.player_actor.heal()
+
+        @staticmethod
+        def show_inventory() -> None:
+            print(GameState.player_actor.inventory)
 
         combat_actions: dict = {
             'help': lambda: Menu.Actions.menu_help(),
@@ -95,8 +125,8 @@ class Menu:
             'z': lambda: 0,
             'status': lambda: Menu.Actions.status(),
             's': lambda: Menu.Actions.status(),
-            'hunt enemy': lambda: 0,  # Menu.Actions.hunt_enemy(),
-            'e': lambda: 0,  # Menu.Actions.hunt_enemy()
+            'repair': lambda: Menu.Actions.repair(),
+            'r': lambda: Menu.Actions.repair()
         }
         noncombat_actions: dict = {
             'help': lambda: Menu.Actions.menu_help(),
@@ -107,10 +137,12 @@ class Menu:
             'p': lambda: Menu.shop(),
             'repair': lambda: Menu.Actions.repair(),
             'r': lambda: Menu.Actions.repair(),
-            'hunt enemy': lambda: 0,  # Menu.Actions.hunt_enemy(),
-            'e': lambda: 0,  # Menu.Actions.hunt_enemy(),
             'heal': lambda: Menu.Actions.heal(),
-            'l': lambda: Menu.Actions.heal()
+            'l': lambda: Menu.Actions.heal(),
+            'inventory': lambda: Menu.Actions.show_inventory(),
+            'i': lambda: Menu.Actions.show_inventory(),
+            'buy': lambda: Menu.buy(),
+            'b':lambda: Menu.buy()
         }
         nonfree_actions: list = [
             'attack',

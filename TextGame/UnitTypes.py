@@ -1,7 +1,6 @@
 import random as rand
 
 from TextGame.GameState import GameState
-from TextGame.Inventory import Inventory
 from TextGame.ActorUnit import ActorUnit
 from TextGame.Armor import Armor
 from TextGame.Weapon import Weapon
@@ -26,9 +25,11 @@ class Player(ActorUnit):
         self._lvl: int = 1
 
     def turn(self) -> None:
+        """ """
         Menu.menu_logic()
 
-    def target_selector(self) -> 'ActorUnit':
+    def target_selector(self) -> ActorUnit:
+        """ """
         banned_index = Menu.targeting()
         chosen_index: int = -1
         max_index: int = len(GameState.actors)-1
@@ -40,6 +41,7 @@ class Player(ActorUnit):
         return GameState.actors[chosen_index]
 
     def weapon_selector(self) -> Weapon:
+        """ """
         chosen_index: int = -1
 
         Menu.player_weapons()
@@ -60,7 +62,7 @@ class Player(ActorUnit):
         """
 
         armors: list = [GameState.player_actor.armor]
-        armors.extend([item for item in GameState.player_actor.inventory.storedItems if type(item) == 'Armor'])
+        armors.extend([item for item in GameState.player_actor.inventory.stored_items if type(item) == 'Armor'])
         Menu.player_armors(armors)
         chosen_index: int = -1
         max_index: int = len(armors)-1
@@ -95,7 +97,11 @@ class Player(ActorUnit):
         :return: None
         """
 
-        self.health += 3
+        if 'Health Potion' in self.inventory:
+            self.inventory.remove_item('Health Potion')
+            self.health += 25
+        else:
+            self.turn()
 
     def repair(self) -> None:
         """
@@ -104,6 +110,10 @@ class Player(ActorUnit):
         :return: None
         """
 
+        if 'Repair Kit' not in self.inventory:
+            self.turn()
+
+        self.inventory.remove_item('Repair Kit')
         command = ''
         while command not in ['a', 'armor', 'w', 'weapon']:
             command = input('Repair (A)rmor or (W)eapon: ').lower()
@@ -120,6 +130,7 @@ class Player(ActorUnit):
 
     @property
     def xp(self) -> int:
+        """ """
         return self._xp
 
     @xp.setter
@@ -134,6 +145,7 @@ class Player(ActorUnit):
 
     @property
     def lvl(self) -> int:
+        """ """
         return self._lvl
 
     @lvl.setter
@@ -143,8 +155,9 @@ class Player(ActorUnit):
         self.xp = 0
         self.next_level_xp_threshold += self.next_level_xp_threshold
         self._lvl = new_lvl
+        GameState.shop_inventory.gold += 150
 
-    def __str__(self) -> str:
+    def __str__(self):
         character_stat: str = (
             f'Name:    {self.name}\n'
             f'HP:      {self.health} / {self.health_max}\n'
@@ -165,7 +178,7 @@ class Player(ActorUnit):
         armor_stat: str = str(self.armor)
         return character_stat + weapon_stat + armor_header + armor_stat
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         return (
             f'ActorUnit(name:{self.name}, '
             f'health_max:{self.health_max}, '
@@ -194,7 +207,7 @@ class Enemy(ActorUnit):
 
         # Hostility towards the player.
         # 0-99:Friendly; 100-174:Neutral; 175-254:Disgruntled ; 255+:hostile
-        self.hostility: int = hostility
+        self.hostility: int = hostility  # Unused
 
         GameState.actors.append(self)
 
@@ -218,7 +231,7 @@ class Enemy(ActorUnit):
     def target_selector(self) -> 'ActorUnit':
         return GameState.player_actor
 
-    def __str__(self) -> str:
+    def __str__(self):
         character_stat: str = (
             f'Name:    {self.name}\n'
             f'HP:      {self.health} / {self.health_max}\n'
@@ -237,7 +250,7 @@ class Enemy(ActorUnit):
         armor_stat: str = str(self.armor)
         return character_stat + weapon_stat + armor_header + armor_stat
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         return (
             f'ActorUnit(name:{self.name}, '
             f'health_max:{self.health_max}, '
@@ -247,16 +260,3 @@ class Enemy(ActorUnit):
             f'hostility:{self.hostility}, '
             f'inventory:{self.inventory})'
         )
-
-
-class Merchant(ActorUnit):
-    """
-    Shop/Merchant class, extends ActorUnit.
-    """
-
-    def __init__(self):
-        super().__init__('Merchant')
-        scaling: int = GameState.player_actor.lvl
-        self.inventory: Inventory = Inventory()
-        self.inventory.gold = rand.randrange(10 + scaling * 5, 80 + scaling * 15)
-

@@ -44,7 +44,7 @@ class Weapon(Item):
 
     @staticmethod
     def create_common_weapon(scaling: int) -> 'Weapon':
-        atk: int = int(math.floor(1 + scaling * 0.7))  # Linear.
+        atk: int = int(math.floor(2 + scaling * 0.7))  # Linear.
         dur: int = int(10 + 0.00002 * scaling ** 3)  # Cubic, but very slow start.
         hit_mod: int = int(math.floor(scaling * 0.035))  # Linearly-increasing monotonic step.
         dmg_type: str = GameState.damage_types[rand.randrange(0, 4)]  # Random normal dmg type.
@@ -57,7 +57,7 @@ class Weapon(Item):
 
     @staticmethod
     def create_uncommon_weapon(scaling: int) -> 'Weapon':
-        atk: int = int(math.floor(2 + scaling * 0.7))  # Linear.
+        atk: int = int(math.floor(4 + scaling * 0.7))  # Linear.
         dur: int = int(15 + 0.00002 * scaling ** 3)  # Cubic, but very slow start.
         hit_mod: int = int(math.floor(scaling * 0.07))  # Linearly-increasing monotonic step.
         dmg_type: str = GameState.damage_types[rand.randrange(0, 4)]  # Random normal dmg type.
@@ -70,7 +70,7 @@ class Weapon(Item):
 
     @staticmethod
     def create_rare_weapon(scaling: int) -> 'Weapon':
-        atk: int = int(math.floor(3 + scaling * 0.8))  # Linear.
+        atk: int = int(math.floor(10 + scaling * 0.8))  # Linear.
         dur: int = int(30 + 0.00003 * scaling ** 3)  # Cubic, but very slow start.
         hit_mod: int = int(math.floor(scaling * 0.07)) + 1  # Linearly-increasing monotonic step.
         dmg_type: str = GameState.damage_types[rand.randrange(0, len(GameState.damage_types))]  # Random dmg type.
@@ -83,7 +83,7 @@ class Weapon(Item):
 
     @staticmethod
     def create_legendary_weapon(scaling: int) -> 'Weapon':
-        atk: int = int(math.floor(5 + scaling * 0.9))  # Linear.
+        atk: int = int(math.floor(15 + scaling * 0.9))  # Linear.
         dur: int = int(100 + 0.00003 * scaling ** 3)  # Cubic, but very slow start.
         hit_mod: int = int(math.floor(scaling * 0.075)) + 4  # Linearly-increasing monotonic step.
         dmg_type: str = GameState.damage_types[rand.randrange(0, len(GameState.damage_types))]  # Random dmg type.
@@ -96,7 +96,7 @@ class Weapon(Item):
 
     @staticmethod
     def create_mythic_weapon(scaling: int) -> 'Weapon':
-        atk: int = int(math.floor(12 + 0.009 * scaling ** 2))  # Quadratic, out-scales Rare@scaling72, Legend@scaling85.
+        atk: int = int(math.floor(17 + 0.009 * scaling ** 2))  # Quadratic, out-scales Rare@scaling72, Legend@scaling85.
         dur: int = int(scaling * 0.03 - 2)  # Cubic, but very slow start.
         hit_mod: int = int(math.floor(scaling * 0.1)) + 7  # Linearly-increasing monotonic step.
         dmg_type: str = GameState.damage_types[rand.randrange(0, len(GameState.damage_types))]  # Random dmg type.
@@ -108,7 +108,7 @@ class Weapon(Item):
         return weap
 
     @staticmethod
-    def weapon_gen(scaling: int) -> 'Weapon':
+    def gen_weapon(scaling: int) -> 'Weapon':
         """
         Generates weapons with random tiers and stats.
 
@@ -200,14 +200,16 @@ class Weapon(Item):
 
     def __str__(self):
         x: str = (f'  {self.name}  \n'
-                  f'++{"+"*len(self.name)}++\n'
+                  #f'++{"+"*len(self.name)}++\n'
                   f'Tier:         {self.tier}\n'
                   f'Dmg:          {self.dmg}\n'
                   f'Durability:   {self.durability} / {self.durability_max}\n'
                   f'To-Hit Bonus: +{self.hit_mod}\n'
                   f'Dmg Type:     {self.dmg_type}\n'
                   f'Ranged:       {"Yes" if self.is_ranged else "No"}\n'
-                  f'++{"+" * len(self.name)}++\n'
+                  f'Value:        {self.value}\n'
+                  f'Weight:       {self.weight}\n'
+                  f'---------------\n'
                   )
         return x
 
